@@ -32,7 +32,7 @@ class Home extends Controllers{
 		}else{
 			$requestInsert = $this->model->setVenta($_SESSION['userData']['user_id'],$txtNombre,$txtCI,$txtListTipoVehiculo,$txtLTS,$txtListTipoPago,$txtFecha,$txtHora);
 			if($requestInsert > 0){
-				$arrResponse = array('status'=> true,'msg' => '¡Venta efectuada con el numero ');
+				$arrResponse = array('status'=> true,'msg' => '¡Venta efectuada con el numero ', 'nTicket' =>$requestInsert);
 				
 			}else{
 				$arrResponse = array('status'=> false,'msg' => '¡Ah ocurrido un error');

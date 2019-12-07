@@ -2,6 +2,13 @@ if (document.querySelector('#formVenta')) {
 	let formUnidad = document.querySelector('#formVenta')
 	formVenta.onsubmit = function (e) {
 		e.preventDefault()
+		let srtNombre  = document.querySelector('#txtNombre')
+		let srtCI  = document.querySelector('#txtCI')
+		let srtListTipoVehiculo = document.querySelector('#txtListTipoVehiculo')
+		let srtLTS = document.querySelector('#txtLTS')
+		let srtListTipoPago = document.querySelector('#txtListTipoPago')
+		let srtFecha = document.querySelector('#txtFecha')
+		let srtHora = document.querySelector('#txtHora')
 		//hacer una validacion para diferentes navegadores y crear el formato de lectura y hacemos la peticion mediante ajax
 		//usando un if reducido creamos un objeto del contenido en (request)
 		let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
@@ -22,7 +29,7 @@ if (document.querySelector('#formVenta')) {
 				if (objData.status) {
 					formVenta.reset()
 					notifi(objData.msg, 'success')
-					
+					fntImprimir(objData.nTicket,formData)
 				} else {
 					notifi(objData.msg, 'error')
 				}
@@ -31,6 +38,32 @@ if (document.querySelector('#formVenta')) {
 	}
 }
 
+
+
+function fntImprimir(intUser,
+srtNombre,
+srtCI,
+srtListTipoVehiculo,
+srtLTS,
+srtListTipoPago,
+srtFecha,
+srtHora){
+	let ajaxUrl = base_url + "ticket.php";
+	//creamos el objeto para os navegadores
+	var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+	//abrimos la conexion y enviamos los parametros para la peticion
+	let strData = "intUser=" + intUser + formData
+	request.open("POST", ajaxUrl, true)
+	//forma en como se enviara
+	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+	//enviamos
+	request.send(strData)
+	request.onreadystatechange = function () {
+		if (request.readyState == 4 && request.status == 200) {
+			// documen.querySelector('.msj').innerHtml = request.ImagickException
+		}
+	}
+}
 
 function mueveReloj(dateObject = new Date()) {
 	let hours = dateObject.getHours();

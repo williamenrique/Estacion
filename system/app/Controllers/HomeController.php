@@ -19,4 +19,26 @@ class Home extends Controllers{
 		$this->views->getViews($this, "home", $data);
 	}
 
+	public function setVenta(){
+		$txtNombre = $_POST['txtNombre'];
+		$txtCI = $_POST['txtCI'];
+		$txtListTipoVehiculo = $_POST['txtListTipoVehiculo'];
+		$txtLTS = $_POST['txtLTS'];
+		$txtListTipoPago = $_POST['txtListTipoPago'];
+		$txtFecha = $_POST['txtFecha'];
+		$txtHora = $_POST['txtHora'];
+		if($txtNombre == "" || $txtCI == "" || $txtLTS == "" ){
+			$arrResponse = array('status'=> false,'msg' => '¡Atención debe llenar los campos.');
+		}else{
+			$requestInsert = $this->model->setVenta($_SESSION['userData']['user_id'],$txtNombre,$txtCI,$txtListTipoVehiculo,$txtLTS,$txtListTipoPago,$txtFecha,$txtHora);
+			if($requestInsert > 0){
+				$arrResponse = array('status'=> true,'msg' => '¡Venta efectuada con el numero ');
+				
+			}else{
+				$arrResponse = array('status'=> false,'msg' => '¡Ah ocurrido un error');
+			}
+			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+		}
+		die();
+	}
 }

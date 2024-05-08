@@ -37,8 +37,8 @@ class Home extends Controllers{
 			}else{
 				$arrResponse = array('status'=> false,'msg' => '¡Ah ocurrido un error');
 			}
-			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		}
+		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		die();
 	}
 }

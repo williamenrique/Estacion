@@ -106,7 +106,7 @@
 								<?php
 								if($_SESSION['userData']['rol_id'] == 1){
 									?>
-								<a href="#" class="dropdown-item">
+								<a href="<?= base_url()?>usuario/createuser" class="dropdown-item">
 									<i class="fas fa-file mr-2"></i> Crear Usuario
 								</a>
 								<?php

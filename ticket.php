@@ -6,41 +6,66 @@
 	use Mike42\Escpos\EscposImage;
 	use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 	use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
-	$connector = new WindowsPrintConnector("Impresora");
-	// $connector = new WindowsPrintConnector("HPRT MPT-II");
+	// $connector = new WindowsPrintConnector("Impresora");
+	$connector = new WindowsPrintConnector("HPRT MPT-II");
 	$printer = new Printer($connector);
-	$intUser = $_POST['intUser'];
-	$txtNombre = $_POST['txtNombre'];
-	$txtCI = $_POST['txtCI'];
-	$txtListTipoVehiculo = $_POST['txtListTipoVehiculo'];
-	$txtLTS = $_POST['txtLTS'];
-	$txtListTipoPago = $_POST['txtListTipoPago'];
-	$txtFecha = $_POST['txtFecha'];
-	$txtHora = $_POST['txtHora'];
-	// $printer->setJustification(Printer::JUSTIFY_CENTER);
-	// try{
-	// 	$logo = EscposImage::load("tux.png", false);
-	//     $printer->bitImage($logo);
-	//     // $printer->graphics($logo);
-	// }catch(Exception $e){
-	// 	echo $e -> getMessage();
-		/*No hacemos nada si hay error*/
-	// }
-	$printer -> text("Estacion de servicio tachira\n");
-	$printer->text("Litros: ". $txtLTS . "\n");
-	// #La fecha también
-	// $printer->text(date("Y-m-d H:i:a") . "\n");
-	// $printer->text("nombre de comprador" . "\n");
-	// $printer->text("cedula del comprador" . "\n");
-	// $printer->text("tipo de vehiculo" . "\n");
-	// $printer->text("forma de pago" . "\n");
-	// $printer->text("" . "\n");
-	// $printer->setTextSize(2, 2);
-	// $printer->setJustification(Printer::JUSTIFY_CENTER);
-	// $printer->text("LTS" . "\n");
-	// $printer->text("" . "\n");
-	// $printer->setTextSize(1, 1);
-	// $printer->text("FUE UN PLACER ATENDERLE\n");
-	// $printer->text("*****************************");
-	$printer->feed(5);
-	$printer -> close();
+	// $intTicket = $_POST['intTicket'];
+	// $intUser = $_SESSION['userData']['user_id'];
+	// $txtNombre = $_POST['txtNombre'];
+	// $txtCI = $_POST['txtCI'];
+	// $txtLTS = $_POST['txtLTS'];
+	// $txtFecha = $_POST['txtFecha'];
+	// $txtHora = $_POST['txtHora'];
+	// $txtListTipoPago = $_POST['txtListTipoPago'];
+	// $txtListTipoVehiculo = $_POST['txtListTipoVehiculo'];
+	
+		// $tipoPago = ($txtListTipoPago == 1) ? "Divisa" : (($txtListTipoPago == 2) ? "Efectivo Bs" : "Punto de venta");
+		// $tipoVehiculo = ($txtListTipoVehiculo == 1) ? "Camion" : (($txtListTipoVehiculo == 2) ? "Carro" : "Moto");
+		// $people_json = get_contents($_POST);
+
+		// echo $decoded_json->srtNombre;
+
+/*
+    saveData['srtListTipoVehiculo'] = srtListTipoVehiculo;
+    saveData['srtListTipoPago'] = srtListTipoPago;
+    saveData['srtFecha'] = srtFecha;
+    saveData['srtHora'] = srtHora;
+*/
+
+
+		if(isset($_POST)){
+			// $arrayRecibido=json_decode($_POST["jObject"], true );
+			$dataTicket = json_decode($_POST['dataTicket'], true);
+			// echo "Hemos recibido en el PHP un array de ".count($arrayRecibido)." elementos";
+			// foreach($arrayRecibido as $valor){
+			
+			// 	echo "\n- ".$valor;
+			// }
+			$tipoPago = ($dataTicket['srtListTipoPago'] == 1) ? "Divisa" : (($dataTicket['srtListTipoPago'] == 2) ? "Efectivo Bs" : "Punto de venta");
+			$tipoVehiculo = ($dataTicket['srtListTipoVehiculo'] == 1) ? "Camion" : (($dataTicket['srtListTipoVehiculo'] == 2) ? "Carro" : "Moto");
+				$printer->setTextSize(2, 2);
+				$printer -> text("Ticket N" ." ". $dataTicket['intTicket'] ."\n");
+				$printer->feed(1);
+				$printer->setTextSize(1, 1);
+				$printer -> text("E/S TACHIRA\n");
+				$printer -> text("Servicio Socialista de\n");
+				$printer -> text("Abastecimiento del Edo Yaracuy\n");
+				// $printer->text("Fecha: \n");
+				$printer->text($dataTicket['srtFecha'] ." - ". $dataTicket['srtHora'] . "\n");
+				$printer->text("Operador : " .$dataTicket['srtNombreOperador']  . "\n");
+				$printer->text("Cliente : " .$dataTicket['srtNombre']  . "\n");
+				$printer->text("CI :". $dataTicket['srtCI'] . "\n");
+				$printer->text("Vehiculo :" . $tipoVehiculo . "\n");
+				$printer->text("Pago :" . $tipoPago . "\n");
+				$printer->text("" . "\n");
+				$printer->setTextSize(2, 2);
+				$printer->setJustification(Printer::JUSTIFY_CENTER);
+				$printer->text("    ".$dataTicket['srtLTS'] . "LTS\n");
+				$printer->text("" . "\n");
+				$printer->setTextSize(1, 1);
+				$printer->text("FUE UN PLACER ATENDERLE\n");
+				$printer->text("*****************************");
+				$printer->feed(5);
+				$printer -> close();
+			
+	}

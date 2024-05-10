@@ -9,6 +9,10 @@
 		<!-- Google Font: Source Sans Pro -->
 		<link rel="stylesheet"
 			href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+		<!-- <link rel="stylesheet" href="<?= PLUGINS ?>css/dataTables.bootstrap4.min.css">
+		<link rel="stylesheet" href="<?= PLUGINS ?>css/responsive.bootstrap4.min.css">
+		<link rel="stylesheet" href="<?= PLUGINS ?>css/buttons.bootstrap4.min.css"> -->
+		<link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.bootstrap4.css">
 		<link rel="stylesheet" href="<?= PLUGINS ?>css/sweetalert2.css">
 		<link rel="stylesheet" href="<?= PLUGINS ?>css/all.min.css">
 		<link rel="stylesheet" href="<?= CSS ?>adminlte.min.css">
@@ -87,27 +91,29 @@
 						<li class="nav-item dropdown">
 							<a class="nav-link" data-toggle="dropdown" href="#">
 								<i class="far fa-bell"></i>
-								<span class="badge badge-warning navbar-badge">15</span>
+								<!-- <span class="badge badge-warning navbar-badge">15</span> -->
 							</a>
 							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-								<span class="dropdown-header">15 Notifications</span>
+								<span class="dropdown-header">Panel de ajustes</span>
+								<div class="dropdown-divider"></div>
+
 								<div class="dropdown-divider"></div>
 								<a href="#" class="dropdown-item">
-									<i class="fas fa-envelope mr-2"></i> 4 new messages
-									<span class="float-right text-muted text-sm">3 mins</span>
+									<i class="fas fa-users mr-2"></i> Perfil
+									<!-- <span class="float-right text-muted text-sm">12 hours</span> -->
 								</a>
 								<div class="dropdown-divider"></div>
+								<?php
+								if($_SESSION['userData']['rol_id'] == 1){
+									?>
 								<a href="#" class="dropdown-item">
-									<i class="fas fa-users mr-2"></i> 8 friend requests
-									<span class="float-right text-muted text-sm">12 hours</span>
+									<i class="fas fa-file mr-2"></i> Crear Usuario
 								</a>
+								<?php
+								}
+								?>
 								<div class="dropdown-divider"></div>
-								<a href="#" class="dropdown-item">
-									<i class="fas fa-file mr-2"></i> 3 new reports
-									<span class="float-right text-muted text-sm">2 days</span>
-								</a>
-								<div class="dropdown-divider"></div>
-								<a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+								<a href="<?= base_url()?>logout" class="dropdown-item dropdown-footer">cerrar sesion</a>
 							</div>
 						</li>
 

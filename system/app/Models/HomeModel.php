@@ -21,4 +21,16 @@ class HomeModel extends Mysql {
 		$return = $request_insert;//retorna el id insertado
 		return $return;
 	}
+	public function getLastTicket(int $intIdUser){
+		$this->intIdUser = $intIdUser;
+		$sql = "SELECT * FROM table_ticket_venta WHERE id_user = $this->intIdUser ORDER BY id_ticket_venta DESC ";
+		$request = $this->select_all($sql);
+		return $request;
+	}
+	public function getTicket(int $intIdUser){
+		$this->intIdUser = $intIdUser;
+		$sql = "SELECT ttv.*, tu.* FROM table_ticket_venta ttv INNER JOIN table_user tu ON ttv.id_user = tu.user_id WHERE ttv.id_ticket_venta = $this->intIdUser";
+		$request = $this->select($sql);
+		return $request;
+	}
 }

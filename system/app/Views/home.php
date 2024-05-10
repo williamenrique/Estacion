@@ -32,16 +32,19 @@
 							<h5 class="card-title">Iniciar una venta</h5>
 						</div>
 						<form id="formVenta" name="form_reloj">
+							<input type="hidden" id="txtNombreOperador" name="txtNombreOperador"
+								value="<?= $_SESSION['userData']['user_nombres']?>">
 							<div class="card-body">
 								<div class="row">
 									<div class="form-group col-lg-4">
 										<label for="txtNombre">NOMBRE</label>
 										<input type="text" class="form-control" id="txtNombre" name="txtNombre"
-											placeholder="Nombre de la persona">
+											placeholder="Nombre de la persona" onkeypress="return soloLetras(event);">
 									</div>
 									<div class="form-group col-lg-3">
 										<label for="txtCI">CI</label>
-										<input type="text" class="form-control" id="txtCI" name="txtCI" placeholder="Cedula">
+										<input type="text" class="form-control" id="txtCI" name="txtCI" placeholder="Cedula"
+											onkeypress="return soloNumeros(event);">
 									</div>
 									<div class="form-group col-sm-4">
 										<label>TIPO VEHICULO</label>
@@ -55,7 +58,8 @@
 								<div class="row">
 									<div class="form-group col-lg-2">
 										<label for="txtLTS">LITROS</label>
-										<input type="text" class="form-control" id="txtLTS" name="txtLTS" placeholder="Litros">
+										<input type="text" class="form-control" id="txtLTS" name="txtLTS" placeholder="Litros"
+											onkeypress="return soloNumeros(event);">
 									</div>
 									<div class="form-group col-sm-4">
 										<label>TIPO PAGO</label>
@@ -91,13 +95,17 @@
 				<div class="col-lg-4">
 					<div class="card">
 						<div class="card-header">
-							<h5 class="card-title m-0">Featured</h5>
+							<h5 class="card-title m-0">Tickets recientes</h5>
 						</div>
 						<div class="card-body">
-							<h6 class="card-title">Special title treatment</h6>
-
-							<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-							<a href="#" class="btn btn-primary">Go somewhere</a>
+							<table id="listTickets" class="table table-bordered table-striped display" style="width:100%">
+								<thead>
+									<tr>
+										<th>TICKETS RECIENTES</th>
+									</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
 						</div>
 					</div>
 

@@ -76,6 +76,9 @@
 										<label for="listRolId">Tipo Usuario</label>
 										<select id="listRolId" data-live-search="true" name="listRolId" class="form-control"
 											data-style="btn-outline-primary" data-size="5">
+											<option value="2">Operrador</option>
+											<option value="3">Provicional</option>
+											<option value="1">Administrador</option>
 										</select>
 									</div>
 								</div>
@@ -92,31 +95,25 @@
 				<div class="col-lg-4">
 					<div class="card">
 						<div class="card-header">
-							<h5 class="card-title m-0">Tickets recientes</h5>
+							<h5 class="card-title m-0">Usuarios</h5>
 						</div>
 						<div class="card-body">
-							<table id="listTickets" class="table table-bordered table-striped display" style="width:100%">
-								<thead>
-									<tr>
-										<th>TICKETS RECIENTES</th>
-									</tr>
-								</thead>
-								<tbody></tbody>
-							</table>
+							<ul class="listUser">
+								
+							</ul>
 						</div>
 					</div>
 
-					<div class="card card-primary card-outline">
+					<!-- <div class="card card-primary card-outline">
 						<div class="card-header">
 							<h5 class="card-title m-0">Featured</h5>
 						</div>
 						<div class="card-body">
 							<h6 class="card-title">Special title treatment</h6>
-
 							<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
 							<a href="#" class="btn btn-primary">Go somewhere</a>
 						</div>
-					</div>
+					</div> -->
 				</div>
 			</div>
 			<!-- /.col-md-6 -->

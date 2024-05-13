@@ -15,13 +15,13 @@ class Usuario extends Controllers{
 		$data['page_tag'] = "Dashboard - Tienda Virtual";
 		$data['page_title'] = "Pagina Principal";
 		$data['page_name'] = "home";
-		$data['page_functions'] = "function.home.js";
+		$data['page_functions'] = "function.user.js";
 		$this->views->getViews($this, "createuser", $data);
 	}
 
 	public function setUser(){
 		if($_POST){
-			$idUser = intval($_POST['idUsuario']);
+			// $idUser = intval($_POST['idUsuario']);
 			$intIdentificacion = intval(strClean($_POST['txtIdentificacion']));
 			$strTxtNombre = ucwords(strClean($_POST['txtNombres']));//convierte las primeras letras en mayusculas
 			$strtxtApellidos = ucwords(strClean($_POST['txtApellidos']));//convierte las primeras letras en mayusculas
@@ -63,4 +63,46 @@ class Usuario extends Controllers{
 		}
 		die();
 	}
+		/**************************
+	 * funcion para llamar a los usuarios
+	 *************************/
+	public function getUsers(){
+		$html = "";
+		$arrData = $this->model->selectUsers();
+		for ($i=0; $i < count($arrData) ; $i++) {
+			if ($arrData[$i]['user_status'] == 1) {
+				$arrData[$i]['user_status'] = '<a style="font-size: 15px; cursor:pointer" class="badge badge-info mx-2" onClick="fntStatus(2,'.$arrData[$i]['user_id'].')">Activo</a>';
+			}else{
+				$arrData[$i]['user_status'] = '<a style="font-size: 15px; cursor:pointer" class="badge badge-warning mx-2" onClick="fntStatus(1,'.$arrData[$i]['user_id'].')">Inactivo</a>';
+			}
+		$html .= '
+						<li>
+							<p class="d-flex justify-content-between">'.$arrData[$i]['user_nombres'].' <strong>'. $arrData[$i]['rol_name'] .'</strong> '.$arrData[$i]['user_status'].'</p>
+						</li>
+		';
+		}
+		//convertir el arreglo de datos en un formato json
+		// echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
+		echo $html;
+		die();
+	}
+	//deshabilitar usuario
+	public function statusUser(){
+		if($_POST){
+			$statusUser = intval($_POST['status']);
+			$idUser = intval($_POST['idUser']);
+			$requestStatus = $this->model->statusUser($idUser,$statusUser);
+			if($requestStatus){
+				if($requestStatus == 1){
+				$arrResponse = array('status' => true, 'msg' => 'Usuario Habilitado', 'estado' => 1);
+			}else if($requestStatus == 2){
+				$arrResponse = array('status' => true, 'msg' => 'Usuario Deshabilitado','estado' => 2);
+			}
+			}else{
+				$arrResponse = array('status' => false, 'msg' => 'Error al cambiar status');
+			}
+			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+		}
+		die();
+	} 
 }

@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+	
 	/**********cargar flota en la tabla**********/
 	if(document.querySelector('#listTickets')){
 		$("#listTickets").DataTable({
@@ -138,7 +139,7 @@ function lastTicket() {
 	}
 }
 window.addEventListener('load', function () {
-	// lastTicket()
+	
 }, false)
 function fntTicket(idTicket) {
 	let ajaxUrl = base_url + "Home/getTicket/" + idTicket

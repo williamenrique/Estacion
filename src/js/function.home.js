@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-	
 	/**********cargar flota en la tabla**********/
 	if(document.querySelector('#listTickets')){
 		$("#listTickets").DataTable({
@@ -13,8 +12,8 @@ document.addEventListener('DOMContentLoaded', function () {
 				"sZeroRecords": "No se encontraron resultados",
 				"sEmptyTable": "Ningún dato disponible",
 				"sInfo": "Total de _TOTAL_ Registros",
-				"sInfoEmpty": "Registros del 0 al 0 de un total de 0 registros",
-				"sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+				"sInfoEmpty": "Registros 0 ",
+				"sInfoFiltered": "(total de _MAX_ registros)",
 				"sInfoPostFix": "",
 				"sSearch": "Buscar:",
 				"sUrl": "",
@@ -31,11 +30,12 @@ document.addEventListener('DOMContentLoaded', function () {
 					"sSortDescending": ": Activar para ordenar la columna de manera descendente"
 				}
 			},
+			 "bPaginate": false,
+			"pagingType": "simple",
 			"ajax": {
 				"url": ' ' + base_url + 'Home/getLastTicket',
 				"dataSrc": ''
 			},
-			
 			"columns": [
 				// { 'data': 'id_ticket' },
 				// { 'data': 'fecha_ticket' },
@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		})
 	}
 })
+
 if (document.querySelector('#formVenta')) {
 	let formUnidad = document.querySelector('#formVenta')
 	formVenta.onsubmit = function (e) {
@@ -76,6 +77,8 @@ if (document.querySelector('#formVenta')) {
 				//condionamos la respuesta del array del controlador
 				if (objData.status) {
 					formVenta.reset()
+					let listTickets = $('#listTickets').DataTable();
+					listTickets.ajax.reload();
 					notifi(objData.msg, 'success')
 					fntImprimir(objData.nTicket, srtNombre, srtCI, srtListTipoVehiculo, srtLTS, srtListTipoPago, srtFecha, srtHora, srtNombreOperador)
 				} else {

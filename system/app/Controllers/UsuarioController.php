@@ -9,6 +9,7 @@ class Usuario extends Controllers{
 		//invocar para que se ejecute el metodo de la herencia
 		parent::__construct();
 	}
+	// TODO: vista user
 	public function createuser(){
 		//invocar la vista con views y usamos getView y pasamos parametros esta clase y la vista
 		//incluimos un arreglo que contendra toda la informacion que se enviara al home
@@ -18,7 +19,6 @@ class Usuario extends Controllers{
 		$data['page_functions'] = "function.user.js";
 		$this->views->getViews($this, "createuser", $data);
 	}
-
 	public function setUser(){
 		if($_POST){
 			// $idUser = intval($_POST['idUsuario']);
@@ -63,9 +63,9 @@ class Usuario extends Controllers{
 		}
 		die();
 	}
-		/**************************
+	/**************************
 	 * funcion para llamar a los usuarios
-	 *************************/
+	*************************/
 	public function getUsers(){
 		$html = "";
 		$arrData = $this->model->selectUsers();
@@ -104,5 +104,100 @@ class Usuario extends Controllers{
 			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		}
 		die();
-	} 
+	}
+	// TODO: vista perfil
+	public function perfil(){
+		//invocar la vista con views y usamos getView y pasamos parametros esta clase y la vista
+		//incluimos un arreglo que contendra toda la informacion que se enviara al home
+		$data['page_tag'] = "Dashboard - Tienda Virtual";
+		$data['page_title'] = "Pagina Principal";
+		$data['page_name'] = "home";
+		$data['page_functions'] = "function.user.js";
+		$this->views->getViews($this, "perfil", $data);
+	}
+	/********* actualizar perfil del usuario*********/
+	public function UpdatePerfil(){
+		if($_POST){
+			//validamos si no existe algun valor
+			if($_POST['opcion'] == 1){
+				if(empty($_POST['textNombres']) || empty($_POST['textApellidos'] ) || empty($_POST['textTlf'])) {
+					$arrResponse = array("status" => false, "msg" => "Datos Incorrectos");
+				}else{
+					$idUser = intval($_POST['textId']);
+					$strTxtNombre = ucwords($_POST['textNombres']);//convierte las primeras letras en mayusculas
+					$strtxtApellidos = ucwords($_POST['textApellidos']);//convierte las primeras letras en mayusculas
+					$intTxtTlf = $_POST['textTlf'];
+					$strTxtEmail = strtolower($_POST['textEmail']);//convierte todas las letras en minusculas
+					$strTxCi = $_POST['textCi'];
+					$strTxtNick = "a";
+					$intOption = 1;
+					$strTxtPass = "a";
+					$filebase = "a";
+					$requestUser = $this->model->updatePerfil($idUser, $strTxtNombre, $strtxtApellidos, $intTxtTlf,$strTxCi,$strTxtEmail, $strTxtPass, $strTxtNick ,$intOption,$filebase);
+					//comprovamos la existencia del usuario si no se actualiza correctamente
+					if($requestUser > 0){
+						$arrResponse = array("status" => true, "msg" => "Datos actualizados correctamente");
+						sessionUser($_SESSION['idUser']);
+					}else{
+						$arrResponse = array("status" => false, "msg" => "No es posible almacenar ls datos");
+					}
+				}
+			}else	
+			if($_POST['opcion'] == 2){
+				if(empty($_POST['textNick'])) {
+					$arrResponse = array("status" => false, "msg" => "Campo nick debe llenarlo");
+				}else{
+					$idUser = intval($_POST['textId']);
+					$strTxtNombre = ucwords('a');//convierte las primeras letras en mayusculas
+					$strtxtApellidos = ucwords('a');//convierte las primeras letras en mayusculas
+					$intTxtTlf = intval(1);
+					$strTxtEmail = strtolower($_POST['textEmail']);//convierte todas las letras en minusculas
+					$strTxCi = $_POST['textCi'];
+					$strTxtNick = $_POST['textNick'];
+					$intOption = 2;
+					$strTxtPass = "a";
+					$filebase = "a";
+					$requestUser = $this->model->updatePerfil($idUser, $strTxtNombre, $strtxtApellidos, $intTxtTlf,$strTxCi,$strTxtEmail, $strTxtPass, $strTxtNick, $intOption,$filebase);
+					
+					//comprovamos la existencia del usuario si no se actualiza correctamente
+					if($requestUser > 0){
+						$arrResponse = array("status" => true, "msg" => "Cambio de usuario correcto");
+						sessionUser($_SESSION['idUser']);
+					}else if($requestUser == "exist"){
+						$arrResponse = array("status" => false, "msg" => "Usuario seleccionado ya esta en uso");
+					}else{
+						$arrResponse = array("status" => false, "msg" => "No es posible almacenar los datos");
+					}
+				}
+			}else	if($_POST['opcion'] == 3){
+				if(empty($_POST['textPassConfirm'])) {
+					$arrResponse = array("status" => false, "msg" => "Clave no puede estar vacia");
+				}else if($_POST['textPass'] == $_POST['textPassConfirm']){
+					$idUser = intval($_POST['textId']);
+					$strTxtNombre = "a";//convierte las primeras letras en mayusculas
+					$strtxtApellidos = "a";//convierte las primeras letras en mayusculas
+					$intTxtTlf = 1;
+					$strTxtEmail = strtolower($_POST['textEmail']);//convierte todas las letras en minusculas
+					$strTxCi = $_POST['textCi'];
+					$strTxtNick = "a";
+					$intOption = 3;
+					$fileBase= "a";
+					$strTxtPass = encryption($_POST['textPassConfirm']) ;
+					$requestUser = $this->model->updatePerfil($idUser, $strTxtNombre, $strtxtApellidos, $intTxtTlf,$strTxCi,$strTxtEmail, $strTxtPass, $strTxtNick, $intOption,$fileBase);
+					//comprovamos la existencia del usuario si no se actualiza correctamente
+					if($requestUser > 0){
+						$arrResponse = array("status" => true, "msg" => "Cambio de password correctamente");
+					}else{
+						$arrResponse = array("status" => false, "msg" => "No es posible almacenar los datos");
+					}
+				}else{
+					$arrResponse = array("status" => false, "msg" => "Claves no coinciden");
+				}
+			}
+			// sessionUser($_SESSION['idUser']);
+			//convertir los datos en una array JSON para poder leerlos en javascript
+			echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+		}
+		die();
+	}
 }

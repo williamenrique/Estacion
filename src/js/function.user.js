@@ -137,3 +137,106 @@ function fntStatus(status,idUser) {
 		}
 	})
 }
+/*****************
+ * actualizar perfil
+ */
+function compararPass() {
+	if (strPass != strPassC) {
+		Swal.fire('Password  no coinciden!', 'Oops...', 'info');
+		return false;
+	}
+	var strPass = document.querySelector('#textPass').value;
+	var strPassC = document.querySelector('#textPassConfirm').value;
+}
+//actualizar datos
+if (document.querySelector('#formDatos')) {
+	var	formDatos = document.querySelector('#formDatos');
+	formDatos.onsubmit = function (e) {
+		e.preventDefault();
+		/*************************************************
+		* creamos el objeto de envio para tipo de navegador
+		* hacer una validacion para diferentes navegadores y crear el formato de lectura
+		* y hacemos la peticion mediante ajax
+		* usando un if reducido creamos un objeto del contenido en(request)
+		*****************************************************/
+		let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+		let ajaxUrl = base_url + 'Usuario/UpdatePerfil';
+		//creamos un objeto del formulario con los datos haciendo referencia a formData
+		let formData = new FormData(formDatos );
+		//prepara los datos por ajax preparando el dom
+		request.open('POST', ajaxUrl, true);
+		//envio de datos del formulario que se almacena enla variable
+		request.send(formData);
+		//obtenemos los resultados y evaluamos
+		request.onreadystatechange = function () {
+			if (request.readyState == 4 && request.status == 200) {
+				//obtenemos los datos y convertimos en JSON
+				let objData = JSON.parse(request.responseText);
+				//leemos el ststus de la respuesta
+				if (objData.status) {
+					$(function () {
+						var Toast = Swal.mixin({
+							toast: true,
+							position: 'top-end',
+							showConfirmButton: false,
+							timer: 3000
+						})
+						Toast.fire({
+							icon: 'success',
+							title: objData.msg
+						})
+					})
+					location.reload();
+					//Swal.fire('Usuario', objData.msg, 'success');
+				} else {
+					Swal.fire({
+						icon: 'error',
+						title: 'Oops...',
+						text: objData.msg
+					})
+				}
+			}
+		}
+	}
+}
+//cambiar password
+if (document.querySelector('#formPass')) {
+	var	formPass = document.querySelector('#formPass');
+	formPass.onsubmit = function (e) {
+		e.preventDefault();
+		/*************************************************
+		* creamos el objeto de envio para tipo de navegador
+		* hacer una validacion para diferentes navegadores y crear el formato de lectura
+		* y hacemos la peticion mediante ajax
+		* usando un if reducido creamos un objeto del contenido en(request)
+		*****************************************************/
+		let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+		let ajaxUrl = base_url + 'Usuario/UpdatePerfil';
+		//creamos un objeto del formulario con los Pass haciendo referencia a formData
+		let formData = new FormData(formPass );
+		//prepara los datos por ajax preparando el dom
+		request.open('POST', ajaxUrl, true);
+		//envio de datos del formulario que se almacena enla variable
+		request.send(formData);
+		//obtenemos los resultados y evaluamos
+		request.onreadystatechange = function () {
+			if (request.readyState == 4 && request.status == 200) {
+				//obtenemos los datos y convertimos en JSON
+				let objData = JSON.parse(request.responseText);
+				//leemos el ststus de la respuesta
+				if (objData.status) {
+					// $("#modalUser").modal("hide");
+					Swal.fire('Usuario', objData.msg, 'success');
+					formPass.reset()
+					// tableUser.ajax.reload()
+				} else {
+					Swal.fire({
+						icon: 'error',
+						title: 'Oops...',
+						text: objData.msg
+					})
+				}
+			}
+		}
+	}
+}

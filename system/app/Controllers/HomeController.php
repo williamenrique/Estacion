@@ -45,7 +45,7 @@ class Home extends Controllers{
 	public function getLastTicket(){
 		$arrData = $this->model->getLastTicket($_SESSION['userData']['user_id']);
 		$html = '';
-		if(count($arrData) > 0){
+
 			for ($i=0; $i < count($arrData); $i++) {
 				$arrData[$i]['ticket'] = '
 					<a href="#" class="" onclick="fntTicket('.$arrData[$i]['id_ticket_venta'].')"><span class="text-bold">N° '.$arrData[$i]['id_ticket_venta'].'</span>   '.$arrData[$i]['fecha_ticket'].' - '.$arrData[$i]['hora_ticket'].'</a><br>
@@ -56,13 +56,12 @@ class Home extends Controllers{
 			}
 			echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
 			die();
-		}
+		
 	}
-
 	public function getTicket(int $intIdTicket){
 		$arrData = $this->model->getTicket($intIdTicket);
 		echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
 		die();
 	}
-	
+
 }

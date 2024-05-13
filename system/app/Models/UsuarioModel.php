@@ -110,4 +110,42 @@ class UsuarioModel extends Mysql {
 		}
 		return $request;
 	}
+		public function updatePerfil(int $intIdUser,string $strTxtNombre,string $strtxtApellidos,string  $intTxtTlf,int $intIdentificacion,string $strTxtEmail,string $strTxtPass, string $strTxtNick, int $intOption,string $fileBase){
+		$this->intIdUser = $intIdUser;
+		$this->strTxtNombre = $strTxtNombre;
+		$this->strtxtApellidos = $strtxtApellidos;
+		$this->intTxtTlf = $intTxtTlf;
+		$this->strTxtEmail = $strTxtEmail;
+		$this->intIdentificacion = $intIdentificacion;
+		$this->strTxtPass = $strTxtPass;
+		$this->strTxtNick = $strTxtNick;
+		$this->intOption = $intOption;
+		$this->fileBase = $fileBase;
+		$sql = "SELECT * FROM table_user WHERE (user_email = '{$this->strTxtEmail}' AND user_id = $this->intIdUser) OR (user_ci = $this->intIdentificacion AND user_id = $this->intIdUser)";
+		$request = $this->select($sql);
+			if($this->intOption == 1){
+				$sql = "UPDATE table_user SET  user_nombres = ?, user_apellidos = ?, user_tlf = ? WHERE user_id = $this->intIdUser AND user_ci = $this->intIdentificacion";
+				$arrData = array(
+					$this->strTxtNombre,
+					$this->strtxtApellidos,
+					$this->intTxtTlf
+				);
+			}else	if($this->intOption == 2){
+				//comprovar que el usuario no exista
+				$sqlNick = "SELECT * FROM table_user WHERE user_nick = '{$this->strTxtNick}'";
+				$requestNick = $this->select($sqlNick);
+				if($requestNick["user_nick"] == $this->strTxtNick){
+					$request = "exist";
+				}else{
+					$sql = "UPDATE table_user SET  user_nick = ? WHERE user_id = $this->intIdUser AND user_ci = $this->intIdentificacion";
+					$arrData = array($this->strTxtNick);
+				}
+			}else	if($this->intOption == 3){
+				$sql = "UPDATE table_user SET  user_pass = ? WHERE user_id = $this->intIdUser AND user_ci = $this->intIdentificacion";
+				$arrData = array($this->strTxtPass);
+			}
+			// echo $sql;
+			$request = $this->update($sql,$arrData);
+		return $request;
+	}
 }

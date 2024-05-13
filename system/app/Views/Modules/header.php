@@ -36,9 +36,9 @@
 						<span class="navbar-toggler-icon"></span>
 					</button>
 
-					<div class="collapse navbar-collapse order-3" id="navbarCollapse">
-						<!-- Left navbar links -->
-						<ul class="navbar-nav">
+					<!-- <div class="collapse navbar-collapse order-3" id="navbarCollapse"> -->
+					<!-- Left navbar links -->
+					<!-- <ul class="navbar-nav">
 							<li class="nav-item">
 								<a href="<?= base_url()?>" class="nav-link">INICIO</a>
 							</li>
@@ -47,8 +47,8 @@
 							</li>
 							<li class="nav-item">
 								<a href="#" class="nav-link">REPORTE</a>
-							</li>
-							<!-- <li class="nav-item dropdown">
+							</li> -->
+					<!-- <li class="nav-item dropdown">
 								<a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
 									class="nav-link dropdown-toggle">Dropdown</a>
 								<ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
@@ -79,45 +79,45 @@
 									</li>
 								</ul>
 							</li> -->
-						</ul>
+					<!-- </ul> -->
 
 
-					</div>
+				</div>
 
-					<!-- Right navbar links -->
-					<ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+				<!-- Right navbar links -->
+				<ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
 
-						<!-- Notifications Dropdown Menu -->
-						<li class="nav-item dropdown">
-							<a class="nav-link" data-toggle="dropdown" href="#">
-								<i class="far fa-bell"></i>
-								<!-- <span class="badge badge-warning navbar-badge">15</span> -->
+					<!-- Notifications Dropdown Menu -->
+					<li class="nav-item dropdown">
+						<a class="nav-link" data-toggle="dropdown" href="#">
+							<i class="far fa-bell"></i>
+							<!-- <span class="badge badge-warning navbar-badge">15</span> -->
+						</a>
+						<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+							<span class="dropdown-header">Panel de ajustes</span>
+							<div class="dropdown-divider"></div>
+
+							<div class="dropdown-divider"></div>
+							<a href="<?= base_url()?>usuario/perfil" class="dropdown-item">
+								<i class="fas fa-users mr-2"></i> Perfil
+								<!-- <span class="float-right text-muted text-sm">12 hours</span> -->
 							</a>
-							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-								<span class="dropdown-header">Panel de ajustes</span>
-								<div class="dropdown-divider"></div>
-
-								<div class="dropdown-divider"></div>
-								<a href="#" class="dropdown-item">
-									<i class="fas fa-users mr-2"></i> Perfil
-									<!-- <span class="float-right text-muted text-sm">12 hours</span> -->
-								</a>
-								<div class="dropdown-divider"></div>
-								<?php
+							<div class="dropdown-divider"></div>
+							<?php
 								if($_SESSION['userData']['rol_id'] == 1){
 									?>
-								<a href="<?= base_url()?>usuario/createuser" class="dropdown-item">
-									<i class="fas fa-file mr-2"></i> Crear Usuario
-								</a>
-								<?php
+							<a href="<?= base_url()?>usuario/createuser" class="dropdown-item">
+								<i class="fas fa-file mr-2"></i> Crear Usuario
+							</a>
+							<?php
 								}
 								?>
-								<div class="dropdown-divider"></div>
-								<a href="<?= base_url()?>logout" class="dropdown-item dropdown-footer">cerrar sesion</a>
-							</div>
-						</li>
+							<div class="dropdown-divider"></div>
+							<a href="<?= base_url()?>logout" class="dropdown-item dropdown-footer">cerrar sesion</a>
+						</div>
+					</li>
 
-					</ul>
-				</div>
-			</nav>
-			<!-- /.navbar -->
+				</ul>
+		</div>
+		</nav>
+		<!-- /.navbar -->

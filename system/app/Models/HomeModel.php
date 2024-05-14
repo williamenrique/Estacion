@@ -48,4 +48,19 @@ class HomeModel extends Mysql {
 		$request = $this->select($sql);
 		return $request;
 	}
+	public function getDetail(){
+		$sql = "SELECT tipo_vehiculo_ticket, COUNT(*) AS cant_vehiculo, monto_ticket, 
+		SUM(monto_ticket) AS cant_venta, lts_ticket, SUM(lts_ticket) AS cant_lts 
+		FROM table_ticket_venta GROUP BY tipo_vehiculo_ticket";
+		// $sql = "SELECT tipo_vehiculo_ticket, COUNT(*) AS cant_vehiculo FROM table_ticket_venta GROUP BY tipo_vehiculo_ticket";
+		$request = $this->select_all($sql);
+		return $request;
+	}
+	public function getDetailP(){
+		$sql = "SELECT tipo_pago_ticket, COUNT(*) AS cant_tipo_pago,
+		monto_ticket, SUM(monto_ticket) AS cant_venta
+		FROM table_ticket_venta GROUP BY tipo_pago_ticket";
+		$request = $this->select_all($sql);
+		return $request;
+	}
 }

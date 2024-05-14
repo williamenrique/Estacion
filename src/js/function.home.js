@@ -48,10 +48,12 @@ document.addEventListener('DOMContentLoaded', function () {
 		})
 	}
 })
+// efectuar una venta
 if (document.querySelector('#formVenta')) {
 	let formUnidad = document.querySelector('#formVenta')
 	formVenta.onsubmit =  (e) => {
 		e.preventDefault()
+		let listDetal = document.querySelector('#listDetal').innerHTML = ""
 		let srtNombre = document.querySelector('#txtNombre').value
 		let srtCI = document.querySelector('#txtCI').value
 		let srtListTipoVehiculo = document.querySelector('#txtListTipoVehiculo').value
@@ -87,6 +89,7 @@ if (document.querySelector('#formVenta')) {
 					listTickets.ajax.reload();
 					notifi(objData.msg, 'success')
 					fntImprimir(objData.nTicket, srtNombre, srtCI, srtListTipoVehiculo, srtLTS, srtListTipoPago, srtFecha, srtHora, srtNombreOperador)
+					fntCargarDetalle()
 				} else {
 					notifi(objData.msg, 'error')
 				}
@@ -238,6 +241,7 @@ cargarTasa = () => {
 		}
 	}
 }
+// cancelar venta
 fntCancelar = () => {
 	document.querySelector('#txtNombre').value = ""
 	document.querySelector('#txtCI').value = ""
@@ -245,6 +249,75 @@ fntCancelar = () => {
 	document.querySelector('#txtListTipoVehiculo').selectedIndex  = 0
 	document.querySelector('#txtLTS').value = ""
 }
-window.addEventListener('load', function () {
+// cargar lista detalle d venta
+fntCargarDetalle = () => {
+	let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
+	let ajaxUrl = base_url + 'Home/getDetail'
+	//prepara los datos por ajax preparando el dom
+	request.open('POST', ajaxUrl, true)
+	//envio de datos del formulario que se almacena enla variable
+	request.send()
+	//despues del envio retornamos una funcion con los datos
+	let listDetal = document.querySelector('#listDetal')
+	request.onreadystatechange = function () {
+		//validamos la respuesta del servidor al enviar los datos
+		if (request.readyState == 4 && request.status == 200) {
+			//obtener el json y convertirlo a un objeto en javascript
+			listDetal.innerHTML = request.responseText
+		}
+	}
+}
+
+// cargar lista detalle d venta
+fntCargarDetalleee = () => {
+	let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
+	let ajaxUrl = base_url + 'Home/getDetail'
+	//prepara los datos por ajax preparando el dom
+	request.open('POST', ajaxUrl, true)
+	//envio de datos del formulario que se almacena enla variable
+	request.send()
+	//despues del envio retornamos una funcion con los datos
+	let listDetal = document.querySelector('#listDetal')
+	request.onreadystatechange = function () {
+		//validamos la respuesta del servidor al enviar los datos
+		if (request.readyState == 4 && request.status == 200) {
+			//obtener el json y convertirlo a un objeto en javascript
+			let objData = JSON.parse(request.responseText)
+			listDetal.innerHTML+= '<strong>Vehiculos</strong>'
+			for(let i=0; i < objData.length; i++) {
+				tipo = objData[i]['tipo_vehiculo_ticket'] == 1 ?	'Carro' : objData[i]['tipo_vehiculo_ticket'] == 2 ? 'Moto' : 'Camion'
+				listDetal.innerHTML+=`
+															<li>
+																	${objData[i]['cant_vehiculo']} ${tipo} ${objData[i]['cant_lts'] + ' LTS'}
+															</li>
+													`
+			}
+		}
+	}
+	let request2 = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
+	let ajaxUrl2 = base_url + 'Home/getDetailP'
+	request2.open('POST', ajaxUrl2, true)
+	request2.send()
+	request2.onreadystatechange = function () {
+		//validamos la respuesta del servidor al enviar los datos
+		if (request2.readyState == 4 && request2.status == 200) {
+			//obtener el json y convertirlo a un objeto en javascript
+			let objData2 = JSON.parse(request2.responseText)
+			listDetal.innerHTML+= '<strong>Montos</strong>'
+			for(let j = 0; j < objData2.length; j++) {
+				tipoP = objData2[j]['tipo_pago_ticket'] == 1 ?	'Divisa '+ objData2[j]['cant_venta'] + '$' : objData2[j]['tipo_pago_ticket'] == 2 ? 'Efectivo ' + objData2[j]['cant_venta'].toFixed(2) + 'Bs' : 'Punto de venta ' + Math.round(objData2[j]['cant_venta']) + 'Bs' 
+				listDetal.innerHTML+=`
+															<li>
+																	${objData2[j]['cant_tipo_pago']} ${tipoP}
+															</li>
+													`
+			}
+		}
+	}
+}
+
+
+window.addEventListener('load', () => {
 	cargarTasa()
+	fntCargarDetalle()
 }, false)

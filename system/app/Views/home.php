@@ -30,12 +30,12 @@
 						<form id="formVenta" name="form_reloj">
 							<div class="card-header ">
 								<div class="row ">
-								
+
 									<div class="form-group col-lg-6">
 										<label for="txtTasa">TASA DEL DIA</label>
 										<input type="text" class="form-control tasa" id="txtTasa" name="txtTasa" placeholder="EJ 00.00"
 											onkeypress="return soloNumeros(event);">
-											<buton class="btn btn-primary mt-2 btnUpdateTasa"  type="button">ACTUALIZAR</buton>
+										<buton class="btn btn-primary mt-2 btnUpdateTasa" type="button">ACTUALIZAR</buton>
 									</div>
 								</div>
 							</div>
@@ -57,8 +57,8 @@
 										<label>TIPO VEHICULO</label>
 										<select id="txtListTipoVehiculo" name="txtListTipoVehiculo" class="form-control">
 											<option value="0" selected>SELECCIONE</option>
-											<option value="1">CAMION</option>
-											<option value="2">CARRO</option>
+											<option value="1">CARRO</option>
+											<option value="2">CAMION</option>
 											<option value="3">MOTO</option>
 										</select>
 									</div>
@@ -97,7 +97,7 @@
 							</div>
 							<div class="card-footer">
 								<button class="btn btn-primary" type="submit">ACEPTAR</button>
-								<button class="btn btn-danger " onclick= "fntCancelar()" type="button">CANCELAR</button>
+								<button class="btn btn-danger " onclick="fntCancelar()" type="button">CANCELAR</button>
 							</div>
 
 						</form>
@@ -143,15 +143,8 @@
 						</div>
 						<div class="card-body ">
 							<section class="list">
-								<ul class="">
-									<strong>Vehiculos</strong>
-									<li>20 Carro  100LTS</li>
-									<li>10 Camiones  200LTS</li>
-									<li>50 Motos  50LTS</li>
-									<strong>Montos</strong>
-									<li>Divisa  350$</li>
-									<li>Efectivo  1500Bs</li>
-									<li>Punto de venta 1800Bs</li>
+								<ul id="listDetal">
+
 								</ul>
 							</section>
 						</div>

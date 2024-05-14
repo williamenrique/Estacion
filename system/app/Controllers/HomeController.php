@@ -27,12 +27,13 @@ class Home extends Controllers{
 		$txtListTipoPago = $_POST['txtListTipoPago'];
 		$txtFecha = $_POST['txtFecha'];
 		$txtHora = $_POST['txtHora'];
-		if($txtNombre == "" || $txtCI == "" || $txtLTS == "" ){
+		$txtMonto = $_POST['txtMonto'];
+		if($txtNombre == "" || $txtCI == "" || $txtLTS == "" || $txtListTipoVehiculo == 0 || $txtListTipoPago == 0 || $txtMonto == ""){
 			$arrResponse = array('status'=> false,'msg' => '¡Atención debe llenar los campos.');
 		}else{
-			$requestInsert = $this->model->setVenta($_SESSION['userData']['user_id'],$txtNombre,$txtCI,$txtListTipoVehiculo,$txtLTS,$txtListTipoPago,$txtFecha,$txtHora);
+			$requestInsert = $this->model->setVenta($_SESSION['userData']['user_id'],$txtNombre,$txtCI,$txtListTipoVehiculo,$txtLTS,$txtListTipoPago,$txtFecha,$txtHora,$txtMonto);
 			if($requestInsert > 0){
-				$arrResponse = array('status'=> true,'msg' => '¡Venta efectuada con el numero ', 'nTicket' =>$requestInsert);
+				$arrResponse = array('status'=> true,'msg' => '¡Venta efectuada con el numero '.$requestInsert, 'nTicket' =>$requestInsert);
 				
 			}else{
 				$arrResponse = array('status'=> false,'msg' => '¡Ah ocurrido un error');
@@ -43,7 +44,7 @@ class Home extends Controllers{
 	}
 	//TODO: obtener ultimos tickets del dia
 	public function getLastTicket(){
-		$arrData = $this->model->getLastTicket($_SESSION['userData']['user_id']);
+		$arrData = $this->model->getLastTicket($_SESSION['userData']['user_id'],date('d-m-y'));
 		$html = '';
 
 			for ($i=0; $i < count($arrData); $i++) {
@@ -61,6 +62,21 @@ class Home extends Controllers{
 	public function getTicket(int $intIdTicket){
 		$arrData = $this->model->getTicket($intIdTicket);
 		echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
+		die();
+	}
+	public function updateTasa(float $intTasa){
+		$requestUpdate = $this->model->updateTasa($intTasa);
+		if($requestUpdate > 0){
+			$arrResponse = array("status" => true, "msg" => "Tasa actualizada");
+		}else{
+			$arrResponse = array("status" => false, "msg" => "No es posible actualizar");
+		}
+		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+		die();
+	}
+	public function getTasa(){
+		$requestUpdate = $this->model->getTasa();
+		echo json_encode($requestUpdate,JSON_UNESCAPED_UNICODE);
 		die();
 	}
 

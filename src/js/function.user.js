@@ -202,7 +202,7 @@ if (document.querySelector('#formDatos')) {
 //cambiar password
 if (document.querySelector('#formPass')) {
 	var	formPass = document.querySelector('#formPass');
-	formPass.onsubmit = function (e) {
+	formPass.onsubmit =  (e) => {
 		e.preventDefault();
 		/*************************************************
 		* creamos el objeto de envio para tipo de navegador
@@ -219,7 +219,7 @@ if (document.querySelector('#formPass')) {
 		//envio de datos del formulario que se almacena enla variable
 		request.send(formData);
 		//obtenemos los resultados y evaluamos
-		request.onreadystatechange = function () {
+		request.onreadystatechange = () =>{
 			if (request.readyState == 4 && request.status == 200) {
 				//obtenemos los datos y convertimos en JSON
 				let objData = JSON.parse(request.responseText);

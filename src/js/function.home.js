@@ -36,6 +36,9 @@ document.addEventListener('DOMContentLoaded', function () {
 				"url": ' ' + base_url + 'Home/getLastTicket',
 				"dataSrc": ''
 			},
+			paging: false,
+			scrollCollapse: true,
+			scrollY: '50vh',
 			"columns": [
 				// { 'data': 'id_ticket' },
 				// { 'data': 'fecha_ticket' },
@@ -45,10 +48,9 @@ document.addEventListener('DOMContentLoaded', function () {
 		})
 	}
 })
-
 if (document.querySelector('#formVenta')) {
 	let formUnidad = document.querySelector('#formVenta')
-	formVenta.onsubmit = function (e) {
+	formVenta.onsubmit =  (e) => {
 		e.preventDefault()
 		let srtNombre = document.querySelector('#txtNombre').value
 		let srtCI = document.querySelector('#txtCI').value
@@ -76,7 +78,11 @@ if (document.querySelector('#formVenta')) {
 				var objData = JSON.parse(request.responseText)
 				//condionamos la respuesta del array del controlador
 				if (objData.status) {
-					formVenta.reset()
+					document.querySelector('#txtNombre').value = ""
+					document.querySelector('#txtCI').value = ""
+					document.querySelector('#txtListTipoPago').selectedIndex  = 0
+					document.querySelector('#txtListTipoVehiculo').selectedIndex  = 0
+					document.querySelector('#txtLTS').value = ""
 					let listTickets = $('#listTickets').DataTable();
 					listTickets.ajax.reload();
 					notifi(objData.msg, 'success')
@@ -88,7 +94,8 @@ if (document.querySelector('#formVenta')) {
 		}
 	}
 }
-function mueveReloj(dateObject = new Date()) {
+// mantener el reloj funcionando
+mueveReloj = (dateObject = new Date()) => {
 	let hours = dateObject.getHours()
 	hours = hours < 10 ? "0" + hours.toString() : hours
 	let minutes = dateObject.getMinutes()
@@ -99,7 +106,8 @@ function mueveReloj(dateObject = new Date()) {
 	document.getElementById("txtHora").value = horaImprimible
 	setTimeout("mueveReloj()",1000)
 }
-function fntImprimir(intTicket, srtNombre, srtCI, srtListTipoVehiculo, srtLTS, srtListTipoPago, srtFecha, srtHora,srtNombreOperador){
+// imprimir el ticket de venta
+fntImprimir = (intTicket, srtNombre, srtCI, srtListTipoVehiculo, srtLTS, srtListTipoPago, srtFecha, srtHora,srtNombreOperador) => {
 	var saveData = Array() //Declaro el arreglo
     saveData['srtNombre'] = srtNombre
     saveData['srtCI'] = srtCI
@@ -127,7 +135,8 @@ function fntImprimir(intTicket, srtNombre, srtCI, srtListTipoVehiculo, srtLTS, s
             }
      })
 }
-function lastTicket() {
+// obtener los ultimos ticket
+lastTicket = () => {
 	let ajaxUrl = base_url + "Home/getLastTicket"
 	//creamos el objeto para os navegadores
 	var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
@@ -141,10 +150,8 @@ function lastTicket() {
 		}
 	}
 }
-window.addEventListener('load', function () {
-	
-}, false)
-function fntTicket(idTicket) {
+//funcion para un ticket
+fntTicket = (idTicket) => {
 	let ajaxUrl = base_url + "Home/getTicket/" + idTicket
 	//creamos el objeto para os navegadores
 	var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
@@ -168,3 +175,76 @@ function fntTicket(idTicket) {
 		}
 	}
 }
+// lista de tipo de de pago
+var select = document.getElementById('txtListTipoPago')
+select.addEventListener('change', function(){
+    var selectedOption = this.options[select.selectedIndex]
+	let tasa = document.querySelector('#txtTasa').value
+	let lts = document.querySelector('#txtLTS').value
+	let monto = document.querySelector('#txtMonto')
+	if(selectedOption.value == 1){
+		let montoP = 0.5 * lts
+		document.querySelector('#txtMonto').value = montoP
+	}
+	if(selectedOption.value == 2){
+		let montoP = lts * 0.5 * tasa 
+		document.querySelector('#txtMonto').value = montoP
+	}
+	if(selectedOption.value == 3){
+		let montoP = lts * 0.5 * tasa 
+		document.querySelector('#txtMonto').value = montoP
+	}
+})
+// actualizar la tasa del dia
+document.querySelector('.btnUpdateTasa').addEventListener('click', () => {
+	let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
+	let tasa = document.querySelector('#txtTasa').value
+	let ajaxUrl = base_url + 'Home/updateTasa/' + tasa
+	//creamos un objeto del formulario con los datos haciendo referencia a formData
+	let strData = "tasa=" + tasa;
+	//prepara los datos por ajax preparando el dom
+	request.open('POST', ajaxUrl, true)
+	//envio de datos del formulario que se almacena enla variable
+	request.send(strData)
+	//despues del envio retornamos una funcion con los datos
+	request.onreadystatechange = function () {
+		//validamos la respuesta del servidor al enviar los datos
+		if (request.readyState == 4 && request.status == 200) {
+			//obtener el json y convertirlo a un objeto en javascript
+			var objData = JSON.parse(request.responseText)
+			if(objData.status){
+				notifi(objData.msg, 'info')
+
+			}
+		}
+	}
+	
+})
+// caragar en el input la tasa
+cargarTasa = () => {
+	let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
+	let ajaxUrl = base_url + 'Home/getTasa'
+	//prepara los datos por ajax preparando el dom
+	request.open('POST', ajaxUrl, true)
+	//envio de datos del formulario que se almacena enla variable
+	request.send()
+	//despues del envio retornamos una funcion con los datos
+	request.onreadystatechange = function () {
+		//validamos la respuesta del servidor al enviar los datos
+		if (request.readyState == 4 && request.status == 200) {
+			//obtener el json y convertirlo a un objeto en javascript
+			var objData = JSON.parse(request.responseText)
+			document.querySelector('#txtTasa').value = objData.tasa_dia
+		}
+	}
+}
+fntCancelar = () => {
+	document.querySelector('#txtNombre').value = ""
+	document.querySelector('#txtCI').value = ""
+	document.querySelector('#txtListTipoPago').selectedIndex  = 0
+	document.querySelector('#txtListTipoVehiculo').selectedIndex  = 0
+	document.querySelector('#txtLTS').value = ""
+}
+window.addEventListener('load', function () {
+	cargarTasa()
+}, false)

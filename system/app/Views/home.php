@@ -27,11 +27,18 @@
 			<div class="row">
 				<div class="col-lg-8">
 					<div class="card">
-						<div class="card-header">
-
-							<h5 class="card-title">Iniciar una venta</h5>
-						</div>
 						<form id="formVenta" name="form_reloj">
+							<div class="card-header ">
+								<div class="row ">
+								
+									<div class="form-group col-lg-6">
+										<label for="txtTasa">TASA DEL DIA</label>
+										<input type="text" class="form-control tasa" id="txtTasa" name="txtTasa" placeholder="EJ 00.00"
+											onkeypress="return soloNumeros(event);">
+											<buton class="btn btn-primary mt-2 btnUpdateTasa"  type="button">ACTUALIZAR</buton>
+									</div>
+								</div>
+							</div>
 							<input type="hidden" id="txtNombreOperador" name="txtNombreOperador"
 								value="<?= $_SESSION['userData']['user_nombres']?>">
 							<div class="card-body">
@@ -49,6 +56,7 @@
 									<div class="form-group col-sm-4">
 										<label>TIPO VEHICULO</label>
 										<select id="txtListTipoVehiculo" name="txtListTipoVehiculo" class="form-control">
+											<option value="0" selected>SELECCIONE</option>
 											<option value="1">CAMION</option>
 											<option value="2">CARRO</option>
 											<option value="3">MOTO</option>
@@ -61,13 +69,18 @@
 										<input type="text" class="form-control" id="txtLTS" name="txtLTS" placeholder="Litros"
 											onkeypress="return soloNumeros(event);">
 									</div>
-									<div class="form-group col-sm-4">
+									<div class="form-group col-sm-3">
 										<label>TIPO PAGO</label>
 										<select id="txtListTipoPago" id="txtListTipoPago" name="txtListTipoPago" class="form-control">
+											<option value="0" selected>SELECCIONE</option>
 											<option value="1">DIVISA</option>
 											<option value="2">EFECTIVO</option>
 											<option value="3">PUNTO DE VENTA</option>
 										</select>
+									</div>
+									<div class="form-group col-lg-2">
+										<label for="txtMonto">Monto</label>
+										<input type="text" class="form-control" id="txtMonto" name="txtMonto">
 									</div>
 									<div class="form-group col-lg-2">
 										<label for="txtFecha">FECHA</label>
@@ -84,13 +97,12 @@
 							</div>
 							<div class="card-footer">
 								<button class="btn btn-primary" type="submit">ACEPTAR</button>
-								<button class="btn btn-danger" type="button">CANCELAR</button>
+								<button class="btn btn-danger " onclick= "fntCancelar()" type="button">CANCELAR</button>
 							</div>
 
 						</form>
 					</div>
 				</div>
-
 				<!-- /.col-md-6 -->
 				<div class="col-lg-4">
 					<div class="card">
@@ -98,6 +110,7 @@
 							<h5 class="card-title m-0">Tickets recientes</h5>
 						</div>
 						<div class="card-body">
+							<!-- <table id="listTickets" class="table table-bordered table-striped display" style="width:100%"> -->
 							<table id="listTickets" class="table table-bordered table-striped display" style="width:100%">
 								<thead>
 									<tr>
@@ -120,6 +133,29 @@
 							<a href="#" class="btn btn-primary">Go somewhere</a>
 						</div>
 					</div> -->
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="card">
+						<div class="card-header ">
+							<h4>Detalle de ventas</h4>
+						</div>
+						<div class="card-body ">
+							<section class="list">
+								<ul class="">
+									<strong>Vehiculos</strong>
+									<li>20 Carro  100LTS</li>
+									<li>10 Camiones  200LTS</li>
+									<li>50 Motos  50LTS</li>
+									<strong>Montos</strong>
+									<li>Divisa  350$</li>
+									<li>Efectivo  1500Bs</li>
+									<li>Punto de venta 1800Bs</li>
+								</ul>
+							</section>
+						</div>
+					</div>
 				</div>
 			</div>
 			<!-- /.col-md-6 -->

@@ -180,7 +180,7 @@ fntTicket = (idTicket) => {
 }
 // lista de tipo de de pago
 var select = document.getElementById('txtListTipoPago')
-select.addEventListener('change', function(){
+select.addEventListener('change', function () {
     var selectedOption = this.options[select.selectedIndex]
 	let tasa = document.querySelector('#txtTasa').value
 	let lts = document.querySelector('#txtLTS').value
@@ -267,57 +267,40 @@ fntCargarDetalle = () => {
 		}
 	}
 }
-
-// cargar lista detalle d venta
-fntCargarDetalleee = () => {
+fntCierre = () => {
+	//usando un if reducido creamos un objeto del contenido en (request)
 	let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
-	let ajaxUrl = base_url + 'Home/getDetail'
+	let ajaxUrl = base_url + 'Home/cierreDia'
 	//prepara los datos por ajax preparando el dom
 	request.open('POST', ajaxUrl, true)
 	//envio de datos del formulario que se almacena enla variable
 	request.send()
 	//despues del envio retornamos una funcion con los datos
-	let listDetal = document.querySelector('#listDetal')
 	request.onreadystatechange = function () {
 		//validamos la respuesta del servidor al enviar los datos
 		if (request.readyState == 4 && request.status == 200) {
 			//obtener el json y convertirlo a un objeto en javascript
-			let objData = JSON.parse(request.responseText)
-			listDetal.innerHTML+= '<strong>Vehiculos</strong>'
-			for(let i=0; i < objData.length; i++) {
-				tipo = objData[i]['tipo_vehiculo_ticket'] == 1 ?	'Carro' : objData[i]['tipo_vehiculo_ticket'] == 2 ? 'Moto' : 'Camion'
-				listDetal.innerHTML+=`
-															<li>
-																	${objData[i]['cant_vehiculo']} ${tipo} ${objData[i]['cant_lts'] + ' LTS'}
-															</li>
-													`
-			}
-		}
-	}
-	let request2 = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
-	let ajaxUrl2 = base_url + 'Home/getDetailP'
-	request2.open('POST', ajaxUrl2, true)
-	request2.send()
-	request2.onreadystatechange = function () {
-		//validamos la respuesta del servidor al enviar los datos
-		if (request2.readyState == 4 && request2.status == 200) {
-			//obtener el json y convertirlo a un objeto en javascript
-			let objData2 = JSON.parse(request2.responseText)
-			listDetal.innerHTML+= '<strong>Montos</strong>'
-			for(let j = 0; j < objData2.length; j++) {
-				tipoP = objData2[j]['tipo_pago_ticket'] == 1 ?	'Divisa '+ objData2[j]['cant_venta'] + '$' : objData2[j]['tipo_pago_ticket'] == 2 ? 'Efectivo ' + objData2[j]['cant_venta'].toFixed(2) + 'Bs' : 'Punto de venta ' + Math.round(objData2[j]['cant_venta']) + 'Bs' 
-				listDetal.innerHTML+=`
-															<li>
-																	${objData2[j]['cant_tipo_pago']} ${tipoP}
-															</li>
-													`
+			var objData = JSON.parse(request.responseText)
+			//condionamos la respuesta del array del controlador
+			if (objData.status) {
+				let listTickets = $('#listTickets').DataTable()
+				listTickets.ajax.reload();
+				notifi(objData.msg, 'success')
+				// fntImprimir(objData.nTicket, srtNombre, srtCI, srtListTipoVehiculo, srtLTS, srtListTipoPago, srtFecha, srtHora, srtNombreOperador)
+				fntCargarDetalle()
+			} else {
+				notifi(objData.msg, 'error')
 			}
 		}
 	}
 }
-
-
 window.addEventListener('load', () => {
 	cargarTasa()
 	fntCargarDetalle()
 }, false)
+/*
+<li>
+		${objData[i]['cant_vehiculo']} ${tipo} ${objData[i]['cant_lts'] + ' LTS'}
+</li>
+`
+*/

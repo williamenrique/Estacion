@@ -18,7 +18,7 @@ class Home extends Controllers{
 		$data['page_functions'] = "function.home.js";
 		$this->views->getViews($this, "home", $data);
 	}
-
+	// hacer una venta e imprimir
 	public function setVenta(){
 		$txtNombre = $_POST['txtNombre'];
 		$txtCI = $_POST['txtCI'];
@@ -46,26 +46,22 @@ class Home extends Controllers{
 	public function getLastTicket(){
 		$arrData = $this->model->getLastTicket($_SESSION['userData']['user_id'],date('d-m-y'));
 		$html = '';
-
 			for ($i=0; $i < count($arrData); $i++) {
 				$arrData[$i]['ticket'] = '
 					<a href="#" class="" onclick="fntTicket('.$arrData[$i]['id_ticket_venta'].')"><span class="text-bold">N° '.$arrData[$i]['id_ticket_venta'].'</span>   '.$arrData[$i]['fecha_ticket'].' - '.$arrData[$i]['hora_ticket'].'</a><br>
 				';
-				// $arrData[$i]['id_ticket'] = '
-				// 	<a href="#" class="" onclick="fntTicket('.$arrData[$i]['id_ticket_venta'].')"><span class="text-bold">N° '.$arrData[$i]['id_ticket_venta'].'
-				// ';
 			}
 			echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
 			die();
 		
 	}
-	// obtener un ticket
+	// obtener un ticket para imprimirlo
 	public function getTicket(int $intIdTicket){
 		$arrData = $this->model->getTicket($intIdTicket);
 		echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
 		die();
 	}
-	// actualizar tasa
+	// actualizar tasa en dolar del dia
 	public function updateTasa(float $intTasa){
 		$requestUpdate = $this->model->updateTasa($intTasa);
 		if($requestUpdate > 0){
@@ -76,35 +72,47 @@ class Home extends Controllers{
 		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		die();
 	}
-	// obtener tasa
+	// obtener tasa en dolaeres del dia
 	public function getTasa(){
 		$requestUpdate = $this->model->getTasa();
 		echo json_encode($requestUpdate,JSON_UNESCAPED_UNICODE);
 		die();
 	}
-	// obtener detalle
+	// obtener detalle y cargarlo en una lista detallada
 	public function getDetail(){
 		$htmlOptions = "";
-		$arrData = $this->model->getDetail();
-		$arrDataP = $this->model->getDetailP();
-		$htmlOptions .= '<strong>Vehiculos</strong>';
-		for ($i=0; $i < count($arrData); $i++) {
-			$tipo = $arrData[$i]['tipo_vehiculo_ticket'] == 1 ?	'Carro' : ($arrData[$i]['tipo_vehiculo_ticket'] == 2 ? 'Moto' : 'Camion');
-			$htmlOptions .= '<li>'.$arrData[$i]['cant_vehiculo']. ' '.$tipo.' </li>';
-		}
-		$htmlOptions .= '<strong>Montos</strong>';
-		for ($j=0; $j < count($arrDataP); $j++) {
-			// echo round($arrDataP[$j]['cant_venta'],2);
-			// die();
-			$tipoP = $arrDataP[$j]['tipo_pago_ticket'] == 1 ?	'Divisa '.$arrDataP[$j]['cant_venta'] : ($arrDataP[$j]['tipo_pago_ticket'] == 2 ?	'Efectivo ' . round($arrDataP[$j]['cant_venta'],2).'Bs' : 'Punto de venta '.round($arrDataP[j]['cant_venta'],2).'Bs');
-			$htmlOptions .= '<li>'.$arrDataP[$j]['cant_tipo_pago']. ' '.$tipoP.' </li>';
+		$arrData = $this->model->getDetail($_SESSION['userData']['user_id'],date('d-m-y'));
+		$arrDataP = $this->model->getDetailP($_SESSION['userData']['user_id'],date('d-m-y'));
+		if(empty($arrData)){
+			$htmlOptions .= '<strong>No existen registros</strong>';
+			$htmlOptions .= '<hr>';
+		}else{
+			$htmlOptions .= '<ul>';
+			$htmlOptions .= '<strong>Vehiculos</strong>';
+			for ($i=0; $i < count($arrData); $i++) {
+				$tipo = $arrData[$i]['tipo_vehiculo_ticket'] == 1 ?	'Carro' : ($arrData[$i]['tipo_vehiculo_ticket'] == 2 ? 'Moto' : 'Camion');
+				$htmlOptions .= '<li>'.$arrData[$i]['cant_vehiculo']. ' '.$tipo.' </li>';
+			}
+			$htmlOptions .= '<strong>Montos</strong>';
+			for ($j=0; $j < count($arrDataP); $j++) {
+				$tipoP = $arrDataP[$j]['tipo_pago_ticket'] == 1 ?	'Divisa '.$arrDataP[$j]['cant_venta'].'$' : ($arrDataP[$j]['tipo_pago_ticket'] == 2 ?	'Efectivo ' . round($arrDataP[$j]['cant_venta'],2).'Bs' : 'Punto de venta '.round($arrDataP[j]['cant_venta'],2).'Bs');
+				$htmlOptions .= '<li>'.$arrDataP[$j]['cant_tipo_pago']. ' '.$tipoP.' </li>';
+			}
+			$htmlOptions .= '</ul>';
+			$htmlOptions .= '<button type="button" class="btn btn-primary" onclick="fntCierre()">Cerrar dia</button>';
 		}
 		echo $htmlOptions;
 		die();
 	}
-	public function getDetailP(){
-		$requestDetail = $this->model->getDetailP();
-		echo json_encode($requestDetail,JSON_UNESCAPED_UNICODE);
+	// boton cerrar el dia 
+	public function cierreDia(){
+		$request = $this->model->cierreDia($_SESSION['userData']['user_id'],date('d-m-y'));
+		if($request){
+			$arrResponse = array("status" => true, "msg" => "Cierre completo");
+		}else{
+			$arrResponse = array("status" => false, "msg" => "No es posible cerrar");
+		}
+		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		die();
 	}
 }

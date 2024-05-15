@@ -25,12 +25,11 @@
 	<div class="content">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-8">
+				<div class="col-8">
 					<div class="card">
 						<form id="formVenta" name="form_reloj">
 							<div class="card-header ">
 								<div class="row ">
-
 									<div class="form-group col-lg-6">
 										<label for="txtTasa">TASA DEL DIA</label>
 										<input type="text" class="form-control tasa" id="txtTasa" name="txtTasa" placeholder="EJ 00.00"
@@ -102,9 +101,20 @@
 
 						</form>
 					</div>
+					<div class="card">
+						<div class="card-header ">
+							<h4>Detalle de ventas</h4>
+						</div>
+						<div class="card-body">
+							<section class="list" id="listDetal">
+								
+								
+							</section>
+							<!-- TODO: coloar un boton para imprimir-->
+						</div>
+					</div>
 				</div>
-				<!-- /.col-md-6 -->
-				<div class="col-lg-4">
+				<div class="col-4">
 					<div class="card">
 						<div class="card-header">
 							<h5 class="card-title m-0">Tickets recientes</h5>
@@ -121,40 +131,10 @@
 							</table>
 						</div>
 					</div>
-
-					<!-- <div class="card card-primary card-outline">
-						<div class="card-header">
-							<h5 class="card-title m-0">Featured</h5>
-						</div>
-						<div class="card-body">
-							<h6 class="card-title">Special title treatment</h6>
-
-							<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-							<a href="#" class="btn btn-primary">Go somewhere</a>
-						</div>
-					</div> -->
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-lg-8">
-					<div class="card">
-						<div class="card-header ">
-							<h4>Detalle de ventas</h4>
-						</div>
-						<div class="card-body ">
-							<section class="list">
-								<ul id="listDetal">
-
-								</ul>
-							</section>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- /.col-md-6 -->
 		</div>
-		<!-- /.row -->
-	</div><!-- /.container-fluid -->
+	</div>
 </div>
 <!-- /.content -->
 </div>

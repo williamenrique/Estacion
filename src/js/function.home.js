@@ -185,15 +185,15 @@ select.addEventListener('change', function () {
 	let tasa = document.querySelector('#txtTasa').value
 	let lts = document.querySelector('#txtLTS').value
 	let monto = document.querySelector('#txtMonto')
-	if(selectedOption.value == 1){
+	if(selectedOption.value == 4){
 		let montoP = 0.5 * lts
 		document.querySelector('#txtMonto').value = montoP
 	}
-	if(selectedOption.value == 2){
+	if(selectedOption.value == 5){
 		let montoP = lts * 0.5 * tasa 
 		document.querySelector('#txtMonto').value = montoP
 	}
-	if(selectedOption.value == 3){
+	if(selectedOption.value == 6){
 		let montoP = lts * 0.5 * tasa 
 		document.querySelector('#txtMonto').value = montoP
 	}
@@ -267,6 +267,31 @@ fntCargarDetalle = () => {
 		}
 	}
 }
+// para el cierre
+fntCierree = () => { 
+	let ajaxUrl = base_url + "Home/getCierre"
+	//creamos el objeto para os navegadores
+	var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
+	//abrimos la conexion y enviamos los parametros para la peticion
+	request.open("POST", ajaxUrl, true)
+	request.send()
+	request.onreadystatechange = function () {
+		//todo va bien 
+		if (request.readyState == 4 && request.status == 200) {
+			let objData = JSON.parse(request.responseText)
+			let intTicket = objData.id_ticket_venta
+			let srtNombre = objData.nombre_ticket
+			let srtCI = objData.ci_ticket
+			let srtListTipoVehiculo = objData.tipo_vehiculo_ticket
+			let srtLTS = objData.lts_ticket
+			let srtListTipoPago = objData.tipo_pago_ticket
+			let srtFecha = objData.fecha_ticket
+			let srtHora = objData.hora_ticket
+			let srtNombreOperador = objData.user_nombres
+			// fntImprimir(intTicket, srtNombre, srtCI, srtListTipoVehiculo, srtLTS, srtListTipoPago, srtFecha, srtHora,srtNombreOperador)
+		}
+	}
+}
 fntCierre = () => {
 	//usando un if reducido creamos un objeto del contenido en (request)
 	let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
@@ -286,6 +311,27 @@ fntCierre = () => {
 				let listTickets = $('#listTickets').DataTable()
 				listTickets.ajax.reload();
 				notifi(objData.msg, 'success')
+				objData.dataCierre.forEach(function(pago) {
+					console.log('cantidad tipo de pago :', pago.CANT + ' cant_venta ' + pago.MONTO)
+					// objData.dataCierre.forEach(function(vehiculo) {
+					// 	console.log('Montos:',vehiculo.CANT)
+					// })
+					// fntImprimirCierre( pago.CANT)
+				})
+				fntImprimirCierre(objData.dataCierre)
+
+
+/*objData.dataPago.forEach(function(pago) {
+					console.log('tipo_pago_ticket'+ pago.tipo_pago_ticket, 'cant_tipo_pago'+ pago.cant_tipo_pago, 'monto_ticket'+ pago.monto_ticket, 'cant_venta'+ pago.cant_venta)
+					objData.dataVehiculo.forEach(function(vehiculo) {
+						console.log('Montos:',vehiculo.monto_ticket)
+					})
+				})
+
+				*/
+
+				/*dataPago = tipo_pago_ticket: 1, cant_tipo_pago: 8, monto_ticket: "20", cant_venta: 95
+				datavehiculo = tipo_vehiculo_ticket: 1, cant_vehiculo: 8, monto_ticket: "146.44", cant_venta: 862.815, lts_ticket: 8, monto_ticket: "146.44"tipo_vehiculo_ticket: 1*/
 				// fntImprimir(objData.nTicket, srtNombre, srtCI, srtListTipoVehiculo, srtLTS, srtListTipoPago, srtFecha, srtHora, srtNombreOperador)
 				fntCargarDetalle()
 			} else {
@@ -293,6 +339,38 @@ fntCierre = () => {
 			}
 		}
 	}
+}
+// imprimir el ticket de venta
+fntImprimirCierre = (srtPago) => {
+	// var saveData = Array() //Declaro el arreglo
+  //   saveData['srtNombre'] = srtNombre
+  //   saveData['srtCI'] = srtCI
+  //   saveData['srtLTS'] = srtLTS
+  //   saveData['intTicket'] = intTicket
+  //   saveData['srtListTipoVehiculo'] = srtListTipoVehiculo
+  //   saveData['srtListTipoPago'] = srtListTipoPago
+  //   saveData['srtFecha'] = srtFecha
+  //   saveData['srtHora'] = srtHora
+	//   saveData['srtNombreOperador'] = srtNombreOperador
+	var saveData = Array() //Declaro el arreglo
+    saveData['srtPago'] = srtPago
+    //Lo convierto a objeto
+    var jObject={}
+    for(i in saveData){
+        jObject[i] = saveData[i]
+    }
+    //Luego lo paso por JSON  a un archivo php llamado js.php
+    // jObject= JSON.stringify(jObject)
+    jObject= JSON.stringify(srtPago)
+    $.ajax({
+            type:'post',
+            cache:false,
+            url: base_url + "cierredia.php",
+            data:{dataTicket:  jObject},
+            success:function(server){
+            	console.log(server)//cuando reciva la respuesta lo imprimo
+            }
+     })
 }
 window.addEventListener('load', () => {
 	cargarTasa()

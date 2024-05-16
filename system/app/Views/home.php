@@ -72,9 +72,9 @@
 										<label>TIPO PAGO</label>
 										<select id="txtListTipoPago" id="txtListTipoPago" name="txtListTipoPago" class="form-control">
 											<option value="0" selected>SELECCIONE</option>
-											<option value="1">DIVISA</option>
-											<option value="2">EFECTIVO</option>
-											<option value="3">PUNTO DE VENTA</option>
+											<option value="4">DIVISA</option>
+											<option value="5">EFECTIVO</option>
+											<option value="6">PUNTO DE VENTA</option>
 										</select>
 									</div>
 									<div class="form-group col-lg-2">
@@ -107,8 +107,8 @@
 						</div>
 						<div class="card-body">
 							<section class="list" id="listDetal">
-								
-								
+
+
 							</section>
 							<!-- TODO: coloar un boton para imprimir-->
 						</div>

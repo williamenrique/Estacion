@@ -90,12 +90,12 @@ class Home extends Controllers{
 			$htmlOptions .= '<ul>';
 			$htmlOptions .= '<strong>Vehiculos</strong>';
 			for ($i=0; $i < count($arrData); $i++) {
-				$tipo = $arrData[$i]['tipo_vehiculo_ticket'] == 1 ?	'Carro' : ($arrData[$i]['tipo_vehiculo_ticket'] == 2 ? 'Moto' : 'Camion');
-				$htmlOptions .= '<li>'.$arrData[$i]['cant_vehiculo']. ' '.$tipo.' </li>';
+				$tipo = $arrData[$i]['tipo_vehiculo_ticket'] == 1 ?	'Carro' : ($arrData[$i]['tipo_vehiculo_ticket'] == 2 ? 'Camion' : 'Moto');
+				$htmlOptions .= '<li style="display: flex; width: 22%;justify-content: space-between"> <span>'.$arrData[$i]['cant_vehiculo']. ' '. $tipo .' </span> <span><strong>'. $arrData[$i]['cant_lts']. '</strong>LTS</span></li>';
 			}
 			$htmlOptions .= '<strong>Montos</strong>';
 			for ($j=0; $j < count($arrDataP); $j++) {
-				$tipoP = $arrDataP[$j]['tipo_pago_ticket'] == 1 ?	'Divisa '.$arrDataP[$j]['cant_venta'].'$' : ($arrDataP[$j]['tipo_pago_ticket'] == 2 ?	'Efectivo ' . round($arrDataP[$j]['cant_venta'],2).'Bs' : 'Punto de venta '.round($arrDataP[j]['cant_venta'],2).'Bs');
+				$tipoP = $arrDataP[$j]['tipo_pago_ticket'] == 4 ?	'Divisa '.$arrDataP[$j]['cant_venta'].'$' : ($arrDataP[$j]['tipo_pago_ticket'] == 5 ?	'Efectivo ' . round($arrDataP[$j]['cant_venta'],2).'Bs' : 'Punto de venta '.round($arrDataP[$j]['cant_venta'],2).'Bs');
 				$htmlOptions .= '<li>'.$arrDataP[$j]['cant_tipo_pago']. ' '.$tipoP.' </li>';
 			}
 			$htmlOptions .= '</ul>';
@@ -107,10 +107,12 @@ class Home extends Controllers{
 	// boton cerrar el dia 
 	public function cierreDia(){
 		$request = $this->model->cierreDia($_SESSION['userData']['user_id'],date('d-m-y'));
+		// $arrDataP = $this->model->getDetailPago($_SESSION['userData']['user_id'],date('d-m-y'));
 		if($request){
-			$arrResponse = array("status" => true, "msg" => "Cierre completo");
+			$arrData = $this->model->getCierre($_SESSION['userData']['user_id'],date('d-m-y'));
+			$arrResponse = array("status" => true, "msg" => "Cierre completo", "dataCierre" => $arrData);
 		}else{
-			$arrResponse = array("status" => false, "msg" => "No es posible cerrar");
+			$arrResponse = array("status" => false, "msg" => "Cierre completo");
 		}
 		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		die();

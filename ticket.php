@@ -6,8 +6,8 @@
 	use Mike42\Escpos\EscposImage;
 	use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 	use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
-	// $connector = new WindowsPrintConnector("Impresora");
-	$connector = new WindowsPrintConnector("HPRT MPT-II");
+	$connector = new WindowsPrintConnector("Impresora");
+	// $connector = new WindowsPrintConnector("HPRT MPT-II");
 	$printer = new Printer($connector);
 	// $intTicket = $_POST['intTicket'];
 	// $intUser = $_SESSION['userData']['user_id'];
@@ -41,8 +41,8 @@
 			
 			// 	echo "\n- ".$valor;
 			// }
-			$tipoPago = ($dataTicket['srtListTipoPago'] == 1) ? "Divisa" : (($dataTicket['srtListTipoPago'] == 2) ? "Efectivo Bs" : "Punto de venta");
-			$tipoVehiculo = ($dataTicket['srtListTipoVehiculo'] == 1) ? "Camion" : (($dataTicket['srtListTipoVehiculo'] == 2) ? "Carro" : "Moto");
+			$tipoPago = ($dataTicket['srtListTipoPago'] == 4) ? "Divisa" : (($dataTicket['srtListTipoPago'] == 5) ? "Efectivo Bs" : "Punto de venta");
+			$tipoVehiculo = ($dataTicket['srtListTipoVehiculo'] == 1) ? "Carro" : (($dataTicket['srtListTipoVehiculo'] == 2) ? "Camion" : "Moto");
 				$printer->setTextSize(2, 2);
 				$printer -> text("Ticket N" ." ". $dataTicket['intTicket'] ."\n");
 				$printer->feed(1);

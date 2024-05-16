@@ -70,9 +70,37 @@ class HomeModel extends Mysql {
 		$this->intIdUser = $intIdUser;
 		$this->srtDate = $srtDate;
 		$this->intStatusTicket = 0;
-		$sql = "UPDATE table_ticket_venta SET status_ticket = ? WHERE id_user = $this->intIdUser /*AND fecha_ticket = '$this->srtDate' */ AND status_ticket = 1";
+		$sql = "UPDATE table_ticket_venta SET status_ticket = ? WHERE id_user = $this->intIdUser /*AND fecha_ticket = '$this->srtDate' */ AND status_ticket = 0";
 		$arrData = array($this->intStatusTicket);
 		$request = $this->update($sql,$arrData);
+		$requestData = array(true,'data' => 'hola');
+		return $requestData;
+	}
+
+
+
+
+	
+	public function getCierre(int $intIdUser, string $srtDate){
+		$this->intIdUser = $intIdUser;
+		$this->srtDate = $srtDate;
+		$sql = "SELECT tipo_vehiculo_ticket, COUNT(*) AS CANT, 
+	SUM(lts_ticket) AS MONTO,fecha_ticket AS fecha  
+	FROM table_ticket_venta GROUP BY tipo_vehiculo_ticket UNION
+SELECT tipo_pago_ticket, COUNT(*) AS CANT, 
+	SUM(monto_ticket) AS MONTO, fecha_ticket AS fecha 
+	FROM table_ticket_venta WHERE id_user = 12 AND fecha_ticket = '16-05-24' GROUP BY tipo_pago_ticket";
+		// $sql = "SELECT tipo_vehiculo_ticket, COUNT(*) AS cant_vehiculo FROM table_ticket_venta GROUP BY tipo_vehiculo_ticket";
+		$request = $this->select_all($sql);
+		return $request;
+	}
+	public function getDetailPago(int $intIdUser, string $srtDate){
+		$this->intIdUser = $intIdUser;
+		$this->srtDate = $srtDate;
+		$sql = "SELECT tipo_pago_ticket, COUNT(*) AS cant_tipo_pago,
+		monto_ticket, SUM(monto_ticket) AS cant_venta
+		FROM table_ticket_venta WHERE id_user = $this->intIdUser AND fecha_ticket = '$this->srtDate'  GROUP BY tipo_pago_ticket";
+		$request = $this->select_all($sql);
 		return $request;
 	}
 }

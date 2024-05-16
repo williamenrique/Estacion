@@ -4,7 +4,7 @@ class HomeModel extends Mysql {
 	public function __construct(){
 		parent::__construct();
 	}
-
+	// generar una venta
 	public function setVenta(int $useId, string $txtNombre, string $txtCI, int $txtListTipoVehiculo, string $txtLTS,int $txtListTipoPago,string $txtFecha, string $txtHora, string $txtMonto){
 		$this->useId = $useId;
 		$this->txtNombre = $txtNombre;
@@ -21,7 +21,7 @@ class HomeModel extends Mysql {
 		$return = $request_insert;//retorna el id insertado
 		return $return;
 	}
-	
+	// actualizar la tasa del dolar
 	public function updateTasa(float $intTasa){
 		$this->intTasa = $intTasa;
 		$sql = "UPDATE table_tasa_dia SET tasa_dia = ?";
@@ -29,11 +29,13 @@ class HomeModel extends Mysql {
 		$request = $this->update($sql,$arrData);
 		return $request;
 	}
+	// obtener la tas del dia en dolares
 	public function getTasa(){
 		$sql = "SELECT * FROM table_tasa_dia";
 		$request = $this->select($sql);
 		return $request;
 	}
+	// obterner un alista de ultimos tickets de venta
 	public function getLastTicket(int $intIdUser, string $srtDate){
 		$this->intIdUser = $intIdUser;
 		$this->srtDate = $srtDate;
@@ -51,6 +53,7 @@ class HomeModel extends Mysql {
 		$request = $this->select_all($sql);
 		return $request;
 	}
+	// funciones para obtener en tale el total 
 	public function getDetailP(int $intIdUser, string $srtDate){
 		$this->intIdUser = $intIdUser;
 		$this->srtDate = $srtDate;
@@ -60,47 +63,54 @@ class HomeModel extends Mysql {
 		$request = $this->select_all($sql);
 		return $request;
 	}
+	// obtener un ticket para imprimir
 	public function getTicket(int $intIdUser){
 		$this->intIdUser = $intIdUser;
 		$sql = "SELECT ttv.*, tu.* FROM table_ticket_venta ttv INNER JOIN table_user tu ON ttv.id_user = tu.user_id WHERE ttv.id_ticket_venta = $this->intIdUser";
 		$request = $this->select($sql);
 		return $request;
 	}
+	// hacer el cierre del dia
 	public function cierreDia(int $intIdUser, string $srtDate){
 		$this->intIdUser = $intIdUser;
 		$this->srtDate = $srtDate;
 		$this->intStatusTicket = 0;
-		$sql = "UPDATE table_ticket_venta SET status_ticket = ? WHERE id_user = $this->intIdUser /*AND fecha_ticket = '$this->srtDate' */ AND status_ticket = 0";
+		$sql = "UPDATE table_ticket_venta SET status_ticket = ? WHERE id_user = $this->intIdUser AND fecha_ticket = '$this->srtDate'  AND status_ticket = 1";
 		$arrData = array($this->intStatusTicket);
 		$request = $this->update($sql,$arrData);
 		$requestData = array(true,'data' => 'hola');
 		return $requestData;
 	}
-
-
-
-
-	
+	// obtener data para imprimir el cierre
 	public function getCierre(int $intIdUser, string $srtDate){
 		$this->intIdUser = $intIdUser;
 		$this->srtDate = $srtDate;
 		$sql = "SELECT tipo_vehiculo_ticket, COUNT(*) AS CANT, 
-	SUM(lts_ticket) AS MONTO,fecha_ticket AS fecha  
-	FROM table_ticket_venta GROUP BY tipo_vehiculo_ticket UNION
-SELECT tipo_pago_ticket, COUNT(*) AS CANT, 
-	SUM(monto_ticket) AS MONTO, fecha_ticket AS fecha 
-	FROM table_ticket_venta WHERE id_user = 12 AND fecha_ticket = '16-05-24' GROUP BY tipo_pago_ticket";
-		// $sql = "SELECT tipo_vehiculo_ticket, COUNT(*) AS cant_vehiculo FROM table_ticket_venta GROUP BY tipo_vehiculo_ticket";
+							SUM(lts_ticket) AS MONTO,fecha_ticket AS fecha  
+							FROM table_ticket_venta GROUP BY tipo_vehiculo_ticket UNION
+						SELECT tipo_pago_ticket, COUNT(*) AS CANT, 
+							SUM(monto_ticket) AS MONTO, fecha_ticket AS fecha 
+							FROM table_ticket_venta WHERE id_user = $this->intIdUser AND fecha_ticket = '$this->srtDate' GROUP BY tipo_pago_ticket";
 		$request = $this->select_all($sql);
-		return $request;
-	}
-	public function getDetailPago(int $intIdUser, string $srtDate){
-		$this->intIdUser = $intIdUser;
-		$this->srtDate = $srtDate;
-		$sql = "SELECT tipo_pago_ticket, COUNT(*) AS cant_tipo_pago,
-		monto_ticket, SUM(monto_ticket) AS cant_venta
-		FROM table_ticket_venta WHERE id_user = $this->intIdUser AND fecha_ticket = '$this->srtDate'  GROUP BY tipo_pago_ticket";
-		$request = $this->select_all($sql);
+
+		if($request){
+			$sqlInsert = "";
+			$arrData = "";
+			$requesInsert = "";
+			foreach($request as $data){
+				$this->tipo = $data['tipo_vehiculo_ticket'];
+				$this->cant = $data['CANT'];
+				$this->monto = $data['MONTO'];
+				$this->fecha = $data['fecha'];
+				$this->user = $_SESSION['userData']['user_id'];
+
+				$sqlInsert = "INSERT INTO table_cierre(tipo_cierre,cant_cierre,monto_cierre,fecha_cierre,id_user)
+											VALUES (?,?,?,?,?)";
+				$arrData = array($this->tipo,$this->cant,$this->monto,$this->fecha,$this->user);
+				$requesInsert = $this->insert($sqlInsert,$arrData);
+				
+			}
+		}
 		return $request;
 	}
 }

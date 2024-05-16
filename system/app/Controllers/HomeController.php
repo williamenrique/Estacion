@@ -48,7 +48,7 @@ class Home extends Controllers{
 		$html = '';
 			for ($i=0; $i < count($arrData); $i++) {
 				$arrData[$i]['ticket'] = '
-					<a href="#" class="" onclick="fntTicket('.$arrData[$i]['id_ticket_venta'].')"><span class="text-bold">N° '.$arrData[$i]['id_ticket_venta'].'</span>   '.$arrData[$i]['fecha_ticket'].' - '.$arrData[$i]['hora_ticket'].'</a><br>
+					<a href="#" class="" onclick="fntTicket('.$arrData[$i]['id_ticket_venta'].')"><span class="text-bold">N° '.$arrData[$i]['id_ticket_venta'].'</span>   '.$arrData[$i]['fecha_ticket'].' - '.$arrData[$i]['hora_ticket'].'  <strong>'.$arrData[$i]['lts_ticket'].'LTS</strong></a><br>
 				';
 			}
 			echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
@@ -107,9 +107,10 @@ class Home extends Controllers{
 	// boton cerrar el dia 
 	public function cierreDia(){
 		$request = $this->model->cierreDia($_SESSION['userData']['user_id'],date('d-m-y'));
-		// $arrDataP = $this->model->getDetailPago($_SESSION['userData']['user_id'],date('d-m-y'));
 		if($request){
+			// obtener data para imprimir el cierre
 			$arrData = $this->model->getCierre($_SESSION['userData']['user_id'],date('d-m-y'));
+			$dataCierre = $this->model->setCierre($arrData);
 			$arrResponse = array("status" => true, "msg" => "Cierre completo", "dataCierre" => $arrData);
 		}else{
 			$arrResponse = array("status" => false, "msg" => "Cierre completo");

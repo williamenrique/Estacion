@@ -129,14 +129,14 @@ fntImprimir = (intTicket, srtNombre, srtCI, srtListTipoVehiculo, srtLTS, srtList
     //Luego lo paso por JSON  a un archivo php llamado js.php
     jObject= JSON.stringify(jObject)
     $.ajax({
-            type:'post',
-            cache:false,
-            url: base_url + "ticket.php",
-            data:{dataTicket:  jObject},
-            success:function(server){
-            	console.log(server)//cuando reciva la respuesta lo imprimo
-            }
-     })
+		type:'post',
+		cache:false,
+		url: base_url + "ticket.php",
+		data:{dataTicket:  jObject},
+		success:function(server){
+			console.log(server)//cuando reciva la respuesta lo imprimo
+		}
+    })
 }
 // obtener los ultimos ticket
 lastTicket = () => {
@@ -297,35 +297,16 @@ fntCierre = () => {
 }
 // imprimir el ticket de venta
 fntImprimirCierre = (srtPago) => {
-	// var saveData = Array() //Declaro el arreglo
-  //   saveData['srtNombre'] = srtNombre
-  //   saveData['srtCI'] = srtCI
-  //   saveData['srtLTS'] = srtLTS
-  //   saveData['intTicket'] = intTicket
-  //   saveData['srtListTipoVehiculo'] = srtListTipoVehiculo
-  //   saveData['srtListTipoPago'] = srtListTipoPago
-  //   saveData['srtFecha'] = srtFecha
-  //   saveData['srtHora'] = srtHora
-	//   saveData['srtNombreOperador'] = srtNombreOperador
-	// var saveData = Array() //Declaro el arreglo
-  //   saveData['srtPago'] = srtPago
-  //   //Lo convierto a objeto
-  //   var jObject={}
-  //   for(i in saveData){
-  //       jObject[i] = saveData[i]
-  //   }
-    //Luego lo paso por JSON  a un archivo php llamado js.php
-    // jObject= JSON.stringify(jObject)
     jObject= JSON.stringify(srtPago)
     $.ajax({
-            type:'post',
-            cache:false,
-            url: base_url + "cierredia.php",
-            data:{dataTicket:  jObject},
-            success:function(server){
-            	console.log(server)//cuando reciva la respuesta lo imprimo
-            }
-     })
+		type:'post',
+		cache:false,
+		url: base_url + "cierredia.php",
+		data:{dataTicket:  jObject},
+		success:function(server){
+			console.log(server)//cuando reciva la respuesta lo imprimo
+		}
+    })
 }
 window.addEventListener('load', () => {
 	cargarTasa()

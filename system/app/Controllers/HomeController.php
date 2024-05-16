@@ -110,7 +110,7 @@ class Home extends Controllers{
 		if($request){
 			// obtener data para imprimir el cierre
 			$arrData = $this->model->getCierre($_SESSION['userData']['user_id'],date('d-m-y'));
-			$dataCierre = $this->model->setCierre($arrData);
+			// $dataCierre = $this->model->setCierre($arrData);
 			$arrResponse = array("status" => true, "msg" => "Cierre completo", "dataCierre" => $arrData);
 		}else{
 			$arrResponse = array("status" => false, "msg" => "Cierre completo");

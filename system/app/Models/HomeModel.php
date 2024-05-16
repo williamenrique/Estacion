@@ -86,13 +86,12 @@ class HomeModel extends Mysql {
 		$this->intIdUser = $intIdUser;
 		$this->srtDate = $srtDate;
 		$sql = "SELECT tipo_vehiculo_ticket, COUNT(*) AS CANT, 
-							SUM(lts_ticket) AS MONTO,fecha_ticket AS fecha  
-							FROM table_ticket_venta GROUP BY tipo_vehiculo_ticket UNION
-						SELECT tipo_pago_ticket, COUNT(*) AS CANT, 
-							SUM(monto_ticket) AS MONTO, fecha_ticket AS fecha 
-							FROM table_ticket_venta WHERE id_user = $this->intIdUser AND fecha_ticket = '$this->srtDate' GROUP BY tipo_pago_ticket";
+					SUM(lts_ticket) AS MONTO,fecha_ticket AS fecha  
+					FROM table_ticket_venta GROUP BY tipo_vehiculo_ticket UNION
+				SELECT tipo_pago_ticket, COUNT(*) AS CANT, 
+					SUM(monto_ticket) AS MONTO, fecha_ticket AS fecha 
+					FROM table_ticket_venta WHERE id_user = $this->intIdUser AND fecha_ticket = '$this->srtDate' GROUP BY tipo_pago_ticket";
 		$request = $this->select_all($sql);
-
 		if($request){
 			$sqlInsert = "";
 			$arrData = "";
@@ -103,12 +102,9 @@ class HomeModel extends Mysql {
 				$this->monto = $data['MONTO'];
 				$this->fecha = $data['fecha'];
 				$this->user = $_SESSION['userData']['user_id'];
-
-				$sqlInsert = "INSERT INTO table_cierre(tipo_cierre,cant_cierre,monto_cierre,fecha_cierre,id_user)
-											VALUES (?,?,?,?,?)";
+				$sqlInsert = "INSERT INTO table_cierre(tipo_cierre,cant_cierre,monto_cierre,fecha_cierre,id_user)VALUES (?,?,?,?,?)";
 				$arrData = array($this->tipo,$this->cant,$this->monto,$this->fecha,$this->user);
 				$requesInsert = $this->insert($sqlInsert,$arrData);
-				
 			}
 		}
 		return $request;

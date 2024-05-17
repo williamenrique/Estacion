@@ -83,15 +83,16 @@ class HomeModel extends Mysql {
 		return $requestData;
 	}
 	// obtener data para imprimir el cierre
+	//TODO: REVISAR EL CIERRE INGRESA UNA FECHA QUE NO ES INGRESAR LA TASA DE DIA
 	public function getCierre(int $intIdUser, string $srtDate){
 		$this->intIdUser = $intIdUser;
 		$this->srtDate = $srtDate;
 		$sql = "SELECT tipo_vehiculo_ticket, COUNT(*) AS CANT, 
-					SUM(lts_ticket) AS MONTO,fecha_ticket AS fecha  
+					SUM(lts_ticket) AS MONTO,fecha_ticket AS fecha, tasa_dia AS tasa
 					FROM table_ticket_venta WHERE id_user = 12 
 						AND status_ticket = 1 GROUP BY tipo_vehiculo_ticket UNION
 				SELECT tipo_pago_ticket, COUNT(*) AS CANT, 
-					SUM(monto_ticket) AS MONTO, fecha_ticket AS fecha 
+					SUM(monto_ticket) AS MONTO, fecha_ticket AS fecha, tasa_dia AS tasa
 					FROM table_ticket_venta WHERE id_user = $this->intIdUser AND fecha_ticket = '$this->srtDate' AND status_ticket = 1 GROUP BY tipo_pago_ticket";
 		$request = $this->select_all($sql);
 		if($request){

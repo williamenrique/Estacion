@@ -312,6 +312,7 @@ fntImprimirCierre = (srtPago) => {
 		}
     })
 }
+// cargar en un alista los cierres pendientes
 fntCierrePendiente = () => {
 	let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
 	let ajaxUrl = base_url + 'Home/cierreP'
@@ -320,7 +321,7 @@ fntCierrePendiente = () => {
 	//envio de datos del formulario que se almacena enla variable
 	request.send()
 	//despues del envio retornamos una funcion con los datos
-	let cierrP = document.querySelector('.cierrP')
+	let cierrP = document.querySelector('#cierrePendiente')
 	request.onreadystatechange = function () {
 		//validamos la respuesta del servidor al enviar los datos
 		if (request.readyState == 4 && request.status == 200) {
@@ -329,8 +330,29 @@ fntCierrePendiente = () => {
 		}
 	}
 }
+// realizar el cierre resagado
 fntCierreP = (fechaActiva) => {
-	notifi(fechaActiva,'info')
+	// cierrePendiente
+	let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
+	let ajaxUrl = base_url + 'Home/cierrePendiente/' + fechaActiva
+	//prepara los datos por ajax preparando el dom
+	request.open('POST', ajaxUrl, true)
+	//envio de datos del formulario que se almacena enla variable
+	request.send()
+	//despues del envio retornamos una funcion con los datos
+	// let cierrP = document.querySelector('.cierrP')
+	request.onreadystatechange = function () {
+		//validamos la respuesta del servidor al enviar los datos
+		if (request.readyState == 4 && request.status == 200) {
+			//obtener el json y convertirlo a un objeto en javascript
+			var objData = JSON.parse(request.responseText)
+			//condionamos la respuesta del array del controlador
+			if (objData.status) { 
+				fntImprimirCierre(objData.dataCierre)
+				fntCierrePendiente()
+			}
+		}
+	}
 }
 window.addEventListener('load', () => {
 	cargarTasa()

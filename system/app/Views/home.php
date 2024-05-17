@@ -106,12 +106,7 @@
 						</form>
 					</div>
 					<!-- TODO: mostrar una seccion si esta un cierre pendiente -->
-					<div class="card">
-						<div class="card-header">
-							<h4>Cierres pendientes</h4>
-						</div>
-						<div class="card-body cierrP"></div>
-					</div>
+					<section id="cierrePendiente"></section>
 					<div class="card">
 						<div class="card-header ">
 							<h4>Detalle de ventas</h4>
@@ -129,7 +124,6 @@
 							<h5 class="card-title m-0">Tickets recientes</h5>
 						</div>
 						<div class="card-body">
-							<!-- <table id="listTickets" class="table table-bordered table-striped display" style="width:100%"> -->
 							<table id="listTickets" class="table table-bordered table-striped display" style="width:100%">
 								<thead>
 									<tr>

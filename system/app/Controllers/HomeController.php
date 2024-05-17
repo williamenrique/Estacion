@@ -101,9 +101,6 @@ class Home extends Controllers{
 				$tipoPago = $arrDataP[$j]['tipo_pago_ticket'] == 4 ?	'Divisa ' : ($arrDataP[$j]['tipo_pago_ticket'] == 5 ?	'Efectivo ' : 'Punto de venta');
 
 				$montoPago = $arrDataP[$j]['tipo_pago_ticket'] == 4 ? $arrDataP[$j]['cant_venta'].'$' : ($arrDataP[$j]['tipo_pago_ticket'] == 5 ? round($arrDataP[$j]['cant_venta'],2).'Bs' : round($arrDataP[$j]['cant_venta'],2).'Bs');
-
-
-				// $htmlOptions .= '<li style="display: flex; width: 22%;justify-content: space-between"><span>'.$arrDataP[$j]['cant_tipo_pago']. '</span><span> '.$tipoP.' </span></li>';
 				$htmlOptions .= '<li style="display: flex; width: 20%;justify-content: space-between"><span>'.$tipoPago. '</span><span><strong> '.$montoPago.' </strong></span></li>';
 			}
 			$htmlOptions .= '</ul>';
@@ -112,7 +109,7 @@ class Home extends Controllers{
 		echo $htmlOptions;
 		die();
 	}
-	// boton cerrar el dia 
+	// boton cerrar el dia actual
 	public function cierreDia(){
 		$request = $this->model->cierreDia($_SESSION['userData']['user_id'],date('d-m-y'));
 		if($request){
@@ -126,21 +123,46 @@ class Home extends Controllers{
 		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		die();
 	}
-	// verificar si hay algun cierre pendiente
+	// verificar y obtener si hay algun cierre pendiente
 	public function cierreP(){
 		$request = $this->model->cierreP($_SESSION['userData']['user_id'],date('d-m-y'));
 		$htmlOptions = "";
 		if($request > 0){
+			$htmlOptions = '
+											<div class="card">
+												<div class="card-header">
+													<h4>Cierres pendientes</h4>
+												</div>
+												<div class="card-body">
+			';
 			for ($i=0; $i < count($request); $i++) {
 				$fecha = "'{$request[$i]['fecha_ticket']}'";
 				$htmlOptions .= '
 					<a href="javascript:;" class="" onclick="fntCierreP('.$fecha.')"><span class="text-bold">N° '.$request[$i]['fecha_ticket'].'</span></strong></a><br>
 				';
 			}
+
+			$htmlOptions .= '
+												</div>
+											</div>
+										';
 		}else{
 			$htmlOptions = '';
 		}
 		echo $htmlOptions;
+		die();
+	}
+	// hacer el cierre dantrior osea uno resagado y mandar a imprimir
+	public function cierrePendiente(string $txtFecha){
+		$request = $this->model->cierreDia($_SESSION['userData']['user_id'],$txtFecha);
+		if($request){
+			// obtener data para imprimir el cierre
+			$arrData = $this->model->getCierre($_SESSION['userData']['user_id'],$txtFecha);
+			$arrResponse = array("status" => true, "msg" => "Cierre completo", "dataCierre" => $arrData);
+		}else{
+			$arrResponse = array("status" => false, "msg" => "Cierre completo");
+		}
+		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		die();
 	}
 }

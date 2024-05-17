@@ -1,4 +1,5 @@
 <?php
+
 	require  './ticket/autoload.php';
 	require  './ticket/autoload.php';
 	use Mike42\Escpos\Printer;

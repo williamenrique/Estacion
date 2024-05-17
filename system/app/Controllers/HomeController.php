@@ -126,4 +126,21 @@ class Home extends Controllers{
 		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		die();
 	}
+	// verificar si hay algun cierre pendiente
+	public function cierreP(){
+		$request = $this->model->cierreP($_SESSION['userData']['user_id'],date('d-m-y'));
+		$htmlOptions = "";
+		if($request > 0){
+			for ($i=0; $i < count($request); $i++) {
+				$fecha = "'{$request[$i]['fecha_ticket']}'";
+				$htmlOptions .= '
+					<a href="javascript:;" class="" onclick="fntCierreP('.$fecha.')"><span class="text-bold">N° '.$request[$i]['fecha_ticket'].'</span></strong></a><br>
+				';
+			}
+		}else{
+			$htmlOptions = '';
+		}
+		echo $htmlOptions;
+		die();
+	}
 }

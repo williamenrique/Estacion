@@ -105,14 +105,19 @@
 
 						</form>
 					</div>
+					<!-- TODO: mostrar una seccion si esta un cierre pendiente -->
+					<div class="card">
+						<div class="card-header">
+							<h4>Cierres pendientes</h4>
+						</div>
+						<div class="card-body cierrP"></div>
+					</div>
 					<div class="card">
 						<div class="card-header ">
 							<h4>Detalle de ventas</h4>
 						</div>
 						<div class="card-body">
 							<section class="list" id="listDetal">
-
-
 							</section>
 							<!-- TODO: coloar un boton para imprimir-->
 						</div>

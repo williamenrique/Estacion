@@ -40,7 +40,7 @@ class HomeModel extends Mysql {
 	public function getLastTicket(int $intIdUser, string $srtDate){
 		$this->intIdUser = $intIdUser;
 		$this->srtDate = $srtDate;
-		$sql = "SELECT * FROM table_ticket_venta WHERE id_user = $this->intIdUser /*AND fecha_ticket = '$this->srtDate'*/ AND status_ticket = 1  ORDER BY id_ticket_venta DESC ";
+		$sql = "SELECT * FROM table_ticket_venta WHERE id_user = $this->intIdUser AND fecha_ticket = '$this->srtDate' AND status_ticket = 1  ORDER BY id_ticket_venta DESC ";
 		$request = $this->select_all($sql);
 		return $request;
 	}
@@ -49,7 +49,7 @@ class HomeModel extends Mysql {
 		$this->srtDate = $srtDate;
 		$sql = "SELECT tipo_vehiculo_ticket, COUNT(*) AS cant_vehiculo, monto_ticket, 
 		SUM(monto_ticket) AS cant_venta, lts_ticket, SUM(lts_ticket) AS cant_lts 
-		FROM table_ticket_venta WHERE id_user = $this->intIdUser /*AND fecha_ticket = '$this->srtDate'*/ AND status_ticket = 1 GROUP BY tipo_vehiculo_ticket";
+		FROM table_ticket_venta WHERE id_user = $this->intIdUser AND fecha_ticket = '$this->srtDate' AND status_ticket = 1 GROUP BY tipo_vehiculo_ticket";
 		// $sql = "SELECT tipo_vehiculo_ticket, COUNT(*) AS cant_vehiculo FROM table_ticket_venta GROUP BY tipo_vehiculo_ticket";
 		$request = $this->select_all($sql);
 		return $request;
@@ -60,7 +60,7 @@ class HomeModel extends Mysql {
 		$this->srtDate = $srtDate;
 		$sql = "SELECT tipo_pago_ticket, COUNT(*) AS cant_tipo_pago,
 		monto_ticket, SUM(monto_ticket) AS cant_venta
-		FROM table_ticket_venta WHERE id_user = $this->intIdUser /*AND fecha_ticket = '$this->srtDate'*/ AND status_ticket = 1 GROUP BY tipo_pago_ticket";
+		FROM table_ticket_venta WHERE id_user = $this->intIdUser AND fecha_ticket = '$this->srtDate' AND status_ticket = 1 GROUP BY tipo_pago_ticket";
 		$request = $this->select_all($sql);
 		return $request;
 	}
@@ -109,6 +109,14 @@ class HomeModel extends Mysql {
 				$requesInsert = $this->insert($sqlInsert,$arrData);
 			}
 		}
+		return $request;
+	}
+	// obtener si existe un cierre pendiente
+	public function cierreP(int $intIdUser,string $srtDate){
+		$this->intIdUser = $intIdUser;
+		$this->srtDate = $srtDate;
+		$sql = "SELECT fecha_ticket, COUNT(*) AS activo FROM table_ticket_venta WHERE status_ticket = 1 AND fecha_ticket != '$this->srtDate' GROUP BY fecha_ticket";
+		$request = $this->select_all($sql);
 		return $request;
 	}
 }

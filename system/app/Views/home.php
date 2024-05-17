@@ -42,7 +42,7 @@
 								value="<?= $_SESSION['userData']['user_nombres']?>">
 							<div class="card-body">
 								<div class="row">
-									<div class="form-group col-lg-4">
+									<div class="form-group col-lg-3">
 										<label for="txtNombre">NOMBRE</label>
 										<input type="text" class="form-control" id="txtNombre" name="txtNombre"
 											placeholder="Nombre de la persona" onkeypress="return soloLetras(event);">
@@ -52,7 +52,7 @@
 										<input type="text" class="form-control" id="txtCI" name="txtCI" placeholder="Cedula"
 											onkeypress="return soloNumeros(event);">
 									</div>
-									<div class="form-group col-sm-4">
+									<div class="form-group col-lg-3">
 										<label>TIPO VEHICULO</label>
 										<select id="txtListTipoVehiculo" name="txtListTipoVehiculo" class="form-control">
 											<option value="0" selected>SELECCIONE</option>
@@ -60,6 +60,10 @@
 											<option value="2">CAMION</option>
 											<option value="3">MOTO</option>
 										</select>
+									</div>
+									<div class="form-group col-lg-2">
+										<label for="txtPlaca">PLACA</label>
+										<input type="text" class="form-control" id="txtPlaca" name="txtPlaca" placeholder="Placa">
 									</div>
 								</div>
 								<div class="row">
@@ -79,7 +83,7 @@
 									</div>
 									<div class="form-group col-lg-2">
 										<label for="txtMonto">Monto</label>
-										<input type="text" class="form-control" id="txtMonto" name="txtMonto">
+										<input type="text" class="form-control" id="txtMonto" name="txtMonto" placeholder="Monto a pagar">
 									</div>
 									<div class="form-group col-lg-2">
 										<label for="txtFecha">FECHA</label>

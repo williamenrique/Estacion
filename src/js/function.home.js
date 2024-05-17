@@ -61,6 +61,7 @@ if (document.querySelector('#formVenta')) {
 		let srtListTipoPago = document.querySelector('#txtListTipoPago').value
 		let srtFecha = document.querySelector('#txtFecha').value
 		let srtHora = document.querySelector('#txtHora').value
+		let srtPlaca = document.querySelector('#txtPlaca').value
 		let srtNombreOperador = document.querySelector('#txtNombreOperador').value
 		//hacer una validacion para diferentes navegadores y crear el formato de lectura y hacemos la peticion mediante ajax
 		//usando un if reducido creamos un objeto del contenido en (request)
@@ -85,10 +86,12 @@ if (document.querySelector('#formVenta')) {
 					document.querySelector('#txtListTipoPago').selectedIndex  = 0
 					document.querySelector('#txtListTipoVehiculo').selectedIndex  = 0
 					document.querySelector('#txtLTS').value = ""
+					document.querySelector('#txtPlaca').value = ""
 					let listTickets = $('#listTickets').DataTable();
 					listTickets.ajax.reload();
 					notifi(objData.msg, 'success')
-					fntImprimir(objData.nTicket, srtNombre, srtCI, srtListTipoVehiculo, srtLTS, srtListTipoPago, srtFecha, srtHora, srtNombreOperador)
+					// manadr a imprimir el ticket de la venta
+					fntImprimir(objData.nTicket, srtNombre, srtCI, srtListTipoVehiculo, srtLTS, srtListTipoPago, srtFecha, srtHora, srtNombreOperador,srtPlaca)
 					fntCargarDetalle()
 				} else {
 					notifi(objData.msg, 'error')
@@ -109,8 +112,8 @@ mueveReloj = (dateObject = new Date()) => {
 	document.getElementById("txtHora").value = horaImprimible
 	setTimeout("mueveReloj()",1000)
 }
-// imprimir el ticket de venta
-fntImprimir = (intTicket, srtNombre, srtCI, srtListTipoVehiculo, srtLTS, srtListTipoPago, srtFecha, srtHora,srtNombreOperador) => {
+// TODO: recibimos los datos para imprimir el ticket de venta
+fntImprimir = (intTicket, srtNombre, srtCI, srtListTipoVehiculo, srtLTS, srtListTipoPago, srtFecha, srtHora,srtNombreOperador,srtPlaca) => {
 	var saveData = Array() //Declaro el arreglo
     saveData['srtNombre'] = srtNombre
     saveData['srtCI'] = srtCI
@@ -121,6 +124,7 @@ fntImprimir = (intTicket, srtNombre, srtCI, srtListTipoVehiculo, srtLTS, srtList
     saveData['srtFecha'] = srtFecha
     saveData['srtHora'] = srtHora
     saveData['srtNombreOperador'] = srtNombreOperador
+    saveData['srtPlaca'] = srtPlaca
     //Lo convierto a objeto
     var jObject={}
     for(i in saveData){

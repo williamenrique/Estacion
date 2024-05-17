@@ -28,10 +28,12 @@ class Home extends Controllers{
 		$txtFecha = $_POST['txtFecha'];
 		$txtHora = $_POST['txtHora'];
 		$txtMonto = $_POST['txtMonto'];
+		$txtPlaca = $_POST['txtPlaca'] == "" ? "N/A" : $_POST['txtPlaca'];
+
 		if($txtNombre == "" || $txtCI == "" || $txtLTS == "" || $txtListTipoVehiculo == 0 || $txtListTipoPago == 0 || $txtMonto == ""){
 			$arrResponse = array('status'=> false,'msg' => '¡Atención debe llenar los campos.');
 		}else{
-			$requestInsert = $this->model->setVenta($_SESSION['userData']['user_id'],$txtNombre,$txtCI,$txtListTipoVehiculo,$txtLTS,$txtListTipoPago,$txtFecha,$txtHora,$txtMonto);
+			$requestInsert = $this->model->setVenta($_SESSION['userData']['user_id'],$txtNombre,$txtCI,$txtListTipoVehiculo,$txtLTS,$txtListTipoPago,$txtFecha,$txtHora,$txtMonto,$txtPlaca);
 			if($requestInsert > 0){
 				$arrResponse = array('status'=> true,'msg' => '¡Venta efectuada con el numero '.$requestInsert, 'nTicket' =>$requestInsert);
 				
@@ -91,12 +93,18 @@ class Home extends Controllers{
 			$htmlOptions .= '<strong>Vehiculos</strong>';
 			for ($i=0; $i < count($arrData); $i++) {
 				$tipo = $arrData[$i]['tipo_vehiculo_ticket'] == 1 ?	'Carro' : ($arrData[$i]['tipo_vehiculo_ticket'] == 2 ? 'Camion' : 'Moto');
-				$htmlOptions .= '<li style="display: flex; width: 22%;justify-content: space-between"> <span>'.$arrData[$i]['cant_vehiculo']. ' '. $tipo .' </span> <span><strong>'. $arrData[$i]['cant_lts']. '</strong>LTS</span></li>';
+				$htmlOptions .= '<li style="display: flex; width: 20%;justify-content: space-between"> <span>'.$arrData[$i]['cant_vehiculo']. ' '. $tipo .' </span> <span><strong>'. $arrData[$i]['cant_lts']. '</strong>LTS</span></li>';
 			}
 			$htmlOptions .= '<strong>Montos</strong>';
 			for ($j=0; $j < count($arrDataP); $j++) {
-				$tipoP = $arrDataP[$j]['tipo_pago_ticket'] == 4 ?	'Divisa '.$arrDataP[$j]['cant_venta'].'$' : ($arrDataP[$j]['tipo_pago_ticket'] == 5 ?	'Efectivo ' . round($arrDataP[$j]['cant_venta'],2).'Bs' : 'Punto de venta '.round($arrDataP[$j]['cant_venta'],2).'Bs');
-				$htmlOptions .= '<li>'.$arrDataP[$j]['cant_tipo_pago']. ' '.$tipoP.' </li>';
+				// $tipoP = $arrDataP[$j]['tipo_pago_ticket'] == 4 ?	'Divisa '.$arrDataP[$j]['cant_venta'].'$' : ($arrDataP[$j]['tipo_pago_ticket'] == 5 ?	'Efectivo ' . round($arrDataP[$j]['cant_venta'],2).'Bs' : 'Punto de venta '.round($arrDataP[$j]['cant_venta'],2).'Bs');
+				$tipoPago = $arrDataP[$j]['tipo_pago_ticket'] == 4 ?	'Divisa ' : ($arrDataP[$j]['tipo_pago_ticket'] == 5 ?	'Efectivo ' : 'Punto de venta');
+
+				$montoPago = $arrDataP[$j]['tipo_pago_ticket'] == 4 ? $arrDataP[$j]['cant_venta'].'$' : ($arrDataP[$j]['tipo_pago_ticket'] == 5 ? round($arrDataP[$j]['cant_venta'],2).'Bs' : round($arrDataP[$j]['cant_venta'],2).'Bs');
+
+
+				// $htmlOptions .= '<li style="display: flex; width: 22%;justify-content: space-between"><span>'.$arrDataP[$j]['cant_tipo_pago']. '</span><span> '.$tipoP.' </span></li>';
+				$htmlOptions .= '<li style="display: flex; width: 20%;justify-content: space-between"><span>'.$tipoPago. '</span><span><strong> '.$montoPago.' </strong></span></li>';
 			}
 			$htmlOptions .= '</ul>';
 			$htmlOptions .= '<button type="button" class="btn btn-primary" onclick="fntCierre()">Cerrar dia</button>';

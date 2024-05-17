@@ -5,7 +5,7 @@ class HomeModel extends Mysql {
 		parent::__construct();
 	}
 	// generar una venta
-	public function setVenta(int $useId, string $txtNombre, string $txtCI, int $txtListTipoVehiculo, string $txtLTS,int $txtListTipoPago,string $txtFecha, string $txtHora, string $txtMonto){
+	public function setVenta(int $useId, string $txtNombre, string $txtCI, int $txtListTipoVehiculo, string $txtLTS,int $txtListTipoPago,string $txtFecha, string $txtHora, string $txtMonto,string $txtPlaca){
 		$this->useId = $useId;
 		$this->txtNombre = $txtNombre;
 		$this->txtCI = $txtCI;
@@ -15,8 +15,9 @@ class HomeModel extends Mysql {
 		$this->txtFecha = $txtFecha;
 		$this->txtHora = $txtHora;
 		$this->txtMonto = $txtMonto;
-		$sql_insert = "INSERT INTO table_ticket_venta(nombre_ticket, ci_ticket, tipo_vehiculo_ticket, lts_ticket, tipo_pago_ticket, fecha_ticket, hora_ticket, id_user,status_ticket,monto_ticket) VALUES(?,?,?,?,?,?,?,?,?,?)";
-		$arrData = array($this->txtNombre,$this->txtCI,$this->txtListTipoVehiculo,$this->txtLTS,$this->txtListTipoPago,$this->txtFecha,$this->txtHora,$this->useId,1,$this->txtMonto);
+		$this->txtPlaca = $txtPlaca;
+		$sql_insert = "INSERT INTO table_ticket_venta(nombre_ticket, ci_ticket, tipo_vehiculo_ticket,placa_ticket, lts_ticket, tipo_pago_ticket, fecha_ticket, hora_ticket, id_user,status_ticket,monto_ticket) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+		$arrData = array($this->txtNombre,$this->txtCI,$this->txtListTipoVehiculo,$this->txtPlaca,$this->txtLTS,$this->txtListTipoPago,$this->txtFecha,$this->txtHora,$this->useId,1,$this->txtMonto);
 		$request_insert = $this->insert($sql_insert,$arrData);//enviamos el query y el array de datos 
 		$return = $request_insert;//retorna el id insertado
 		return $return;

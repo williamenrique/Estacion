@@ -171,6 +171,7 @@ class Home extends Controllers{
 		$file = (file_exists('./data/reporte.txt') ? unlink('./data/reporte.txt') : fopen("./data/reporte.txt", "w"));
 		// fwrite($file," vacio". PHP_EOL);
 		$request = $this->model->getTickets(date('d-m-y'));
+		$requestMonto = $this->model->getTicketsMonto(date('d-m-y'));
 		$file = fopen("./data/reporte.txt", "a");
 		for ($i=0; $i < count($request); $i++) {
 			$cont = $i+1;
@@ -178,6 +179,7 @@ class Home extends Controllers{
 			$divisa = ($request[$i]['tipo_pago_ticket'] == 4 ? $request[$i]['monto_ticket'].'$' : "");
 			$efectivo = ($request[$i]['tipo_pago_ticket'] == 5 ? $request[$i]['monto_ticket'].'Bs' : "");
 			$punto = ($request[$i]['tipo_pago_ticket'] == 6 ? $request[$i]['monto_ticket'].'Bs' : "");
+
 			fwrite($file, 
 				$cont.';'
 			.$request[$i]['id_ticket_venta'].';'
@@ -185,8 +187,26 @@ class Home extends Controllers{
 			.$request[$i]['lts_ticket'].';'
 			.$divisa.';'
 			.$efectivo.';'
-			.$punto.';');
+			.$punto. PHP_EOL);
 		}
+		$dataTotal = $this->model->getTotal();
+		$divisa = $dataTotal['divisa']['divisa'];
+		$efectivo = $dataTotal['efectivo']['efectivo'];
+		$punto = $dataTotal['punto']['punto'];
+		$lts = $dataTotal['lts']['lts'];
+		fwrite($file,';'.';'.'TOTALES;'.$lts.';'.$divisa.'$;'.$efectivo.'BS;'.$punto.'Bs' .PHP_EOL);
+		// foreach ($dataTotal as $key) {
+		// 	echo $key['lts'];
+		// }
+
+		// die();
+		// for ($j=0; $j < count($dataTotal); $j++) {
+		// 	echo $dataTotal[$j]['lts'];
+		// 	// fwrite($file,';'.';'.';'.';'.'TOTALES;'.$dataTotal[$j]['lts'].';'.$dataTotal[$j]['divisa'].';'.$dataTotal[$j]['efectivo'].';'.$dataTotal[$j]['punto']. PHP_EOL);
+		// }
+		// for ($j=0; $j < count($requestMonto); $j++) {
+		// }
+		// fwrite($file, 'hola' . PHP_EOL);
 		fclose($file);
 	}
 }

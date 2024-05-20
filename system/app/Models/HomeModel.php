@@ -85,7 +85,6 @@ class HomeModel extends Mysql {
 		return $requestData;
 	}
 	// obtener data para imprimir el cierre
-	//TODO: REVISAR EL CIERRE INGRESA UNA FECHA QUE NO ES INGRESAR LA TASA DE DIA
 	public function getCierre(int $intIdUser, string $srtDate){
 		$this->intIdUser = $intIdUser;
 		$this->srtDate = $srtDate;
@@ -126,8 +125,41 @@ class HomeModel extends Mysql {
 	// obtener los datos de las ventas del dia
 	public function getTickets(string $srtDate){
 		$this->srtDate = $srtDate;
-echo        $sql = "SELECT * FROM table_ticket_venta WHERE fecha_ticket = '$this->srtDate'";
-        $request = $this->select_all($sql);
+		$sql = "SELECT * FROM table_ticket_venta WHERE fecha_ticket = '$this->srtDate'";
+		$request = $this->select_all($sql);
 		return $request;
-    }
+  }
+	// obtener los datos de los montos de las ventas del dia
+	public function getTicketsMonto(string $srtDate){
+		$this->srtDate = $srtDate;
+		$sql = "SELECT  tipo_pago_ticket, COUNT(*), SUM(lts_ticket) AS LTS,fecha_ticket 
+			AS fecha, tasa_dia AS tasa FROM table_ticket_venta 
+			WHERE id_user = 12 AND fecha_ticket = '$this->srtDate' UNION
+			SELECT tipo_pago_ticket, COUNT(*) AS CANT, SUM(monto_ticket) AS MONTO, fecha_ticket 
+			AS fecha, tasa_dia AS tasa FROM table_ticket_venta 
+			WHERE id_user = 12 AND fecha_ticket = '$this->srtDate'  GROUP BY tipo_pago_ticket";
+		$request = $this->select_all($sql);
+		return $request;
+  }
+	public function getTotal(){
+			$sql = "SELECT SUM(monto_ticket) AS divisa FROM table_ticket_venta 
+				WHERE tipo_pago_ticket = 4 AND id_user = 12 AND fecha_ticket = '14-05-24'";
+			$sql1 ="SELECT SUM(monto_ticket) AS efectivo FROM table_ticket_venta 
+				WHERE tipo_pago_ticket = 5 AND id_user = 12 AND fecha_ticket = '14-05-24'";
+			$sql2 ="SELECT SUM(monto_ticket) AS punto FROM table_ticket_venta 
+				WHERE tipo_pago_ticket = 6 AND id_user = 12 AND fecha_ticket = '14-05-24'";
+			$sql3 ="SELECT SUM(lts_ticket) AS lts FROM table_ticket_venta
+				WHERE  id_user = 12 AND fecha_ticket = '14-05-24'";
+			$request = $this->select($sql);
+			$request1 = $this->select($sql1);
+			$request2 = $this->select($sql2);
+			$request3 = $this->select($sql3);
+			return $arrayData = array('divisa'=> $request,'efectivo'=> $request1,'punto'=> $request2,'lts'=> $request3);
+			// $sql_insert = "INSERT INTO table_total VALUES(divisa,efectivo,punto,lts,id_user,fecha) VALUES (?,?,?,?,?,?)";
+			// $arrData = array($request,$request1,$request2,$request,$request3,$_SESSION['userData']['user_id'],'14-05-24');
+			// $request_insert = $this->insert($sql_insert,$arrData);
+			// dep($request_insert);
+			// return $request_insert;
+	}
+
 }

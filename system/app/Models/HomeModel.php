@@ -123,4 +123,11 @@ class HomeModel extends Mysql {
 		$request = $this->select_all($sql);
 		return $request;
 	}
+	// obtener los datos de las ventas del dia
+	public function getTickets(string $srtDate){
+		$this->srtDate = $srtDate;
+echo        $sql = "SELECT * FROM table_ticket_venta WHERE fecha_ticket = '$this->srtDate'";
+        $request = $this->select_all($sql);
+		return $request;
+    }
 }

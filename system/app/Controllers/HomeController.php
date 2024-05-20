@@ -166,4 +166,27 @@ class Home extends Controllers{
 		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		die();
 	}
+	// TODO: generar archivo para el reporte en pdf
+	public function reportePdf(){
+		$file = (file_exists('./data/reporte.txt') ? unlink('./data/reporte.txt') : fopen("./data/reporte.txt", "w"));
+		// fwrite($file," vacio". PHP_EOL);
+		$request = $this->model->getTickets(date('d-m-y'));
+		$file = fopen("./data/reporte.txt", "a");
+		for ($i=0; $i < count($request); $i++) {
+			$cont = $i+1;
+			$vehiculo = ($request[$i]['tipo_vehiculo_ticket'] == 1 ? "CARRO" : ($request[$i]['tipo_vehiculo_ticket'] == 2 ? "CAMION" : "MOTO"));
+			$divisa = ($request[$i]['tipo_pago_ticket'] == 4 ? $request[$i]['monto_ticket'].'$' : "");
+			$efectivo = ($request[$i]['tipo_pago_ticket'] == 5 ? $request[$i]['monto_ticket'].'Bs' : "");
+			$punto = ($request[$i]['tipo_pago_ticket'] == 6 ? $request[$i]['monto_ticket'].'Bs' : "");
+			fwrite($file, 
+				$cont.';'
+			.$request[$i]['id_ticket_venta'].';'
+			.$vehiculo.';'
+			.$request[$i]['lts_ticket'].';'
+			.$divisa.';'
+			.$efectivo.';'
+			.$punto.';');
+		}
+		fclose($file);
+	}
 }

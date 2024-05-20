@@ -362,6 +362,33 @@ mueveReloj = (dateObject = new Date()) => {
 	document.getElementById("txtHora").value = horaImprimible
 	setTimeout("mueveReloj()",1000)
 }
+
+//TODO: generar pdf
+
+fntIraReporte = () => {
+    let ajaxUrl = base_url + "Home/reportePdf"
+    //creamos el objeto para os navegadores
+    var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
+    //abrimos la conexion y enviamos los parametros para la peticion
+    request.open("POST", ajaxUrl, true)
+    request.send()
+    request.onreadystatechange = function () {
+        //todo va bien 
+        if (request.readyState == 4 && request.status == 200) {
+            // let objData = JSON.parse(request.responseText)
+            // let intTicket = objData.id_ticket_venta
+            // let srtNombre = objData.nombre_ticket
+            // let srtCI = objData.ci_ticket
+            // let srtListTipoVehiculo = objData.tipo_vehiculo_ticket
+            // let srtLTS = objData.lts_ticket
+            // let srtListTipoPago = objData.tipo_pago_ticket
+            // let srtFecha = objData.fecha_ticket
+            // let srtHora = objData.hora_ticket
+            // let srtNombreOperador = objData.user_nombres
+            // fntImprimir(intTicket, srtNombre, srtCI, srtListTipoVehiculo, srtLTS, srtListTipoPago, srtFecha, srtHora, srtNombreOperador)
+        }
+    }
+}
 /*
 <li>
 		${objData[i]['cant_vehiculo']} ${tipo} ${objData[i]['cant_lts'] + ' LTS'}

@@ -1,5 +1,4 @@
 <?php 
-/* Call this file 'hello-world.php' */
 	require  './ticket/autoload.php';
 	require  './ticket/autoload.php';
 	use Mike42\Escpos\Printer;
@@ -9,38 +8,8 @@
 	$connector = new WindowsPrintConnector("Impresora");
 	// $connector = new WindowsPrintConnector("HPRT MPT-II");
 	$printer = new Printer($connector);
-	// $intTicket = $_POST['intTicket'];
-	// $intUser = $_SESSION['userData']['user_id'];
-	// $txtNombre = $_POST['txtNombre'];
-	// $txtCI = $_POST['txtCI'];
-	// $txtLTS = $_POST['txtLTS'];
-	// $txtFecha = $_POST['txtFecha'];
-	// $txtHora = $_POST['txtHora'];
-	// $txtListTipoPago = $_POST['txtListTipoPago'];
-	// $txtListTipoVehiculo = $_POST['txtListTipoVehiculo'];
-	
-		// $tipoPago = ($txtListTipoPago == 1) ? "Divisa" : (($txtListTipoPago == 2) ? "Efectivo Bs" : "Punto de venta");
-		// $tipoVehiculo = ($txtListTipoVehiculo == 1) ? "Camion" : (($txtListTipoVehiculo == 2) ? "Carro" : "Moto");
-		// $people_json = get_contents($_POST);
-
-		// echo $decoded_json->srtNombre;
-
-/*
-    saveData['srtListTipoVehiculo'] = srtListTipoVehiculo;
-    saveData['srtListTipoPago'] = srtListTipoPago;
-    saveData['srtFecha'] = srtFecha;
-    saveData['srtHora'] = srtHora;
-*/
-
-
 		if(isset($_POST)){
-			// $arrayRecibido=json_decode($_POST["jObject"], true );
 			$dataTicket = json_decode($_POST['dataTicket'], true);
-			// echo "Hemos recibido en el PHP un array de ".count($arrayRecibido)." elementos";
-			// foreach($arrayRecibido as $valor){
-			
-			// 	echo "\n- ".$valor;
-			// }
 			$placaVehiculo = $dataTicket['srtPlaca'] == "" ? "N/A" : $dataTicket['srtPlaca'];
 			$tipoPago = ($dataTicket['srtListTipoPago'] == 4) ? "Divisa ".$dataTicket['srtMonto'].'$' : (($dataTicket['srtListTipoPago'] == 5) ? "Efectivo ".$dataTicket['srtMonto'].'Bs' : "Punto de venta ".$dataTicket['srtMonto'].'Bs');
 			$tipoVehiculo = ($dataTicket['srtListTipoVehiculo'] == 1) ? "Carro" : (($dataTicket['srtListTipoVehiculo'] == 2) ? "Camion" : "Moto");
@@ -68,5 +37,4 @@
 				$printer->text("*****************************");
 				$printer->feed(5);
 				$printer -> close();
-			
 	}

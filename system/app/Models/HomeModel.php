@@ -106,9 +106,10 @@ class HomeModel extends Mysql {
 				$this->cant = $data['CANT'];
 				$this->monto = $data['MONTO'];
 				$this->fecha = $data['fecha'];
+				$this->tasa = $data['tasa'];
 				$this->user = $_SESSION['userData']['user_id'];
-				$sqlInsert = "INSERT INTO table_cierre(tipo_cierre,cant_cierre,monto_cierre,fecha_cierre,id_user)VALUES (?,?,?,?,?)";
-				$arrData = array($this->tipo,$this->cant,$this->monto,$this->fecha,$this->user);
+				$sqlInsert = "INSERT INTO table_cierre(tipo_cierre,cant_cierre,monto_cierre,tasa_dia,fecha_cierre,id_user)VALUES (?,?,?,?,?,?)";
+				$arrData = array($this->tipo,$this->cant,$this->monto,$this->tasa,$this->fecha,$this->user);
 				$requesInsert = $this->insert($sqlInsert,$arrData);
 			}
 		}

@@ -6,7 +6,6 @@
 	use Mike42\Escpos\EscposImage;
 	use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 	use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
-	// $connector = new WindowsPrintConnector("Impresora");
 	$connector = new WindowsPrintConnector("HPRT MPT-II");
 	$printer = new Printer($connector);
 	$decoded_json = json_decode($_POST['dataTicket'], true);
@@ -33,7 +32,7 @@
 	$printer->text("" . "\n");
 	$printer->setTextSize(1, 1);
 	$printer->text("Cierre del dia : ".$decoded_json[$key]["fecha"] . "\n");
-	$printer->text("Tasa del dia : ".$decoded_json[$key]["tasa"] . "\n");
+	$printer->text("Tasa del dia : ".$decoded_json[$key]["tasa"]."Bs\n");
 	$printer ->text("E/S TACHIRA\n");
 	$printer ->text("Servicio Socialista de\n");
 	$printer ->text("Abastecimiento del Edo Yaracuy\n");

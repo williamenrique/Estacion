@@ -62,6 +62,7 @@ if (document.querySelector('#formVenta')) {
 		let srtFecha = document.querySelector('#txtFecha').value
 		let srtHora = document.querySelector('#txtHora').value
 		let srtPlaca = document.querySelector('#txtPlaca').value
+		let srtMonto = document.querySelector('#txtMonto').value
 		let srtNombreOperador = document.querySelector('#txtNombreOperador').value
 		//hacer una validacion para diferentes navegadores y crear el formato de lectura y hacemos la peticion mediante ajax
 		//usando un if reducido creamos un objeto del contenido en (request)
@@ -87,11 +88,12 @@ if (document.querySelector('#formVenta')) {
 					document.querySelector('#txtListTipoVehiculo').selectedIndex  = 0
 					document.querySelector('#txtLTS').value = ""
 					document.querySelector('#txtPlaca').value = ""
+					document.querySelector('#txtMonto').value = ""
 					let listTickets = $('#listTickets').DataTable();
 					listTickets.ajax.reload();
 					notifi(objData.msg, 'success')
 					// manadr a imprimir el ticket de la venta
-					fntImprimir(objData.nTicket, srtNombre, srtCI, srtListTipoVehiculo, srtLTS, srtListTipoPago, srtFecha, srtHora, srtNombreOperador,srtPlaca)
+					fntImprimir(objData.nTicket, srtNombre, srtCI, srtListTipoVehiculo, srtLTS, srtListTipoPago, srtFecha, srtHora, srtNombreOperador,srtPlaca,srtMonto)
 					fntCargarDetalle()
 				} else {
 					notifi(objData.msg, 'error')
@@ -100,20 +102,8 @@ if (document.querySelector('#formVenta')) {
 		}
 	}
 }
-// mantener el reloj funcionando
-mueveReloj = (dateObject = new Date()) => {
-	let hours = dateObject.getHours()
-	hours = hours < 10 ? "0" + hours.toString() : hours
-	let minutes = dateObject.getMinutes()
-	minutes = minutes < 10 ? "0" + minutes.toString() : minutes
-	let seconds = dateObject.getSeconds()
-	seconds = seconds < 10 ? "0" + seconds.toString() : seconds
-	let horaImprimible =  hours + ":" + minutes + ":" + seconds
-	document.getElementById("txtHora").value = horaImprimible
-	setTimeout("mueveReloj()",1000)
-}
 // TODO: recibimos los datos para imprimir el ticket de venta
-fntImprimir = (intTicket, srtNombre, srtCI, srtListTipoVehiculo, srtLTS, srtListTipoPago, srtFecha, srtHora,srtNombreOperador,srtPlaca) => {
+fntImprimir = (intTicket, srtNombre, srtCI, srtListTipoVehiculo, srtLTS, srtListTipoPago, srtFecha, srtHora,srtNombreOperador,srtPlaca,srtMonto) => {
 	var saveData = Array() //Declaro el arreglo
     saveData['srtNombre'] = srtNombre
     saveData['srtCI'] = srtCI
@@ -125,6 +115,7 @@ fntImprimir = (intTicket, srtNombre, srtCI, srtListTipoVehiculo, srtLTS, srtList
     saveData['srtHora'] = srtHora
     saveData['srtNombreOperador'] = srtNombreOperador
     saveData['srtPlaca'] = srtPlaca
+    saveData['srtMonto'] = srtMonto
     //Lo convierto a objeto
     var jObject={}
     for(i in saveData){
@@ -359,6 +350,18 @@ window.addEventListener('load', () => {
 	fntCargarDetalle()
 	fntCierrePendiente()
 }, false)
+// mantener el reloj funcionando
+mueveReloj = (dateObject = new Date()) => {
+	let hours = dateObject.getHours()
+	hours = hours < 10 ? "0" + hours.toString() : hours
+	let minutes = dateObject.getMinutes()
+	minutes = minutes < 10 ? "0" + minutes.toString() : minutes
+	let seconds = dateObject.getSeconds()
+	seconds = seconds < 10 ? "0" + seconds.toString() : seconds
+	let horaImprimible =  hours + ":" + minutes + ":" + seconds
+	document.getElementById("txtHora").value = horaImprimible
+	setTimeout("mueveReloj()",1000)
+}
 /*
 <li>
 		${objData[i]['cant_vehiculo']} ${tipo} ${objData[i]['cant_lts'] + ' LTS'}

@@ -30,16 +30,13 @@
 			$punto = $decoded_json[$key]["CANT"]. ' Punto de venta '.round($decoded_json[$key]["MONTO"],2).'Bs';  
 		}
 	}
-
-	// $printer->setTextSize(2, 2);
-	// $printer -> text("Ticket N" ." ". $dataTicket['intTicket'] ."\n");
-	// $printer->feed(1);
-	$printer->text("Cierre del dia : ".$decoded_json[$key]["fecha"] . "\n");
+	$printer->text("" . "\n");
 	$printer->setTextSize(1, 1);
-	$printer -> text("E/S TACHIRA\n");
-	$printer -> text("Servicio Socialista de\n");
-	$printer -> text("Abastecimiento del Edo Yaracuy\n");
-	// $printer->text("Fecha: ".$decoded_json[$key]["fecha"] . "\n");
+	$printer->text("Cierre del dia : ".$decoded_json[$key]["fecha"] . "\n");
+	$printer->text("Tasa del dia : ".$decoded_json[$key]["tasa"] . "\n");
+	$printer ->text("E/S TACHIRA\n");
+	$printer ->text("Servicio Socialista de\n");
+	$printer ->text("Abastecimiento del Edo Yaracuy\n");
 	$printer->text("Vehiculos atendidos\n");
 	(isset($carro)) ? $printer->text($carro. "\n") : 'no existe';
 	(isset($camion)) ? $printer->text($camion. "\n") : 'no existe';
@@ -49,8 +46,6 @@
 	(isset($efectivo)) ? $printer->text($efectivo. "\n") : 'no existe';
 	(isset($punto)) ? $printer->text($punto. "\n") : 'no existe';
 	$printer->text("" . "\n");
-	$printer->setTextSize(1, 1);
-	// $printer->text("FUE UN PLACER ATENDERLE\n");
 	$printer->text("*****************************");
-	$printer->feed(5);
+	$printer->feed(4);
 	$printer -> close();

@@ -28,12 +28,13 @@ class Home extends Controllers{
 		$txtFecha = $_POST['txtFecha'];
 		$txtHora = $_POST['txtHora'];
 		$txtMonto = $_POST['txtMonto'];
+		$txtTasa = $_POST['txtTasa'];
 		$txtPlaca = $_POST['txtPlaca'] == "" ? "N/A" : $_POST['txtPlaca'];
 
 		if($txtNombre == "" || $txtCI == "" || $txtLTS == "" || $txtListTipoVehiculo == 0 || $txtListTipoPago == 0 || $txtMonto == ""){
 			$arrResponse = array('status'=> false,'msg' => '¡Atención debe llenar los campos.');
 		}else{
-			$requestInsert = $this->model->setVenta($_SESSION['userData']['user_id'],$txtNombre,$txtCI,$txtListTipoVehiculo,$txtLTS,$txtListTipoPago,$txtFecha,$txtHora,$txtMonto,$txtPlaca);
+			$requestInsert = $this->model->setVenta($_SESSION['userData']['user_id'],$txtNombre,$txtCI,$txtListTipoVehiculo,$txtLTS,$txtListTipoPago,$txtFecha,$txtHora,$txtMonto,$txtPlaca,$txtTasa);
 			if($requestInsert > 0){
 				$arrResponse = array('status'=> true,'msg' => '¡Venta efectuada con el numero '.$requestInsert, 'nTicket' =>$requestInsert);
 				

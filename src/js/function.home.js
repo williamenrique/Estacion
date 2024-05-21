@@ -294,13 +294,13 @@ fntCierre = () => {
 fntImprimirCierre = (srtPago) => {
     jObject= JSON.stringify(srtPago)
     $.ajax({
-		type:'post',
-		cache:false,
-		url: base_url + "cierredia.php",
-		data:{dataTicket:  jObject},
-		success:function(server){
-			console.log(server)//cuando reciva la respuesta lo imprimo
-		}
+			type:'post',
+			cache:false,
+			url: base_url + "cierredia.php",
+			data:{dataTicket:  jObject},
+			success:function(server){
+				console.log(server)//cuando reciva la respuesta lo imprimo
+			}
     })
 }
 // cargar en un alista los cierres pendientes
@@ -384,6 +384,37 @@ fntIraReporte = (srtDate) => {
 					}
         }
     }
+}
+
+fntBackup3 = () => {
+	let ajaxUrl = base_url + "Home/getBackup"
+    //creamos el objeto para os navegadores
+    var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
+    //abrimos la conexion y enviamos los parametros para la peticion
+    request.open("POST", ajaxUrl, true)
+    request.send()
+    request.onreadystatechange = function () {
+        //todo va bien 
+        if (request.readyState == 4 && request.status == 200) {
+            var objData = JSON.parse(request.responseText)
+					//condionamos la respuesta del array del controlador
+					
+        }
+    }
+}
+
+
+fntBackup = () => {
+    // jObject= JSON.stringify(srtPago)
+    $.ajax({
+			type:'post',
+			cache:false,
+			url: base_url + "backup/backupData.php",
+			// data:{dataTicket:  jObject},
+			success:function(server){
+				console.log(server)//cuando reciva la respuesta lo imprimo
+			}
+    })
 }
 /*
 <li>

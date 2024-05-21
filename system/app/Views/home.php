@@ -121,6 +121,8 @@
 						<div class="card-header">
 							<a href="<?= base_url()?>fpdf/reporte.php" target="_blank" class="btn btn-primary"
 								style=" margin-top: 8px" id="irReporte" onclick="fntIraReporte('<?= date('d-m-y')?>')">REPORTE</a>
+							<a href="javascript:;" class="btn btn-primary" style=" margin-top: 8px" id="irReporte"
+								onclick="fntBackup()">BAKCUP</a>
 						</div>
 					</div>
 				</div>

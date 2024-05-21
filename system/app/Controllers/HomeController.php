@@ -197,4 +197,10 @@ class Home extends Controllers{
 		fwrite($file,';'.';'.'TOTALES;'.$lts.';'.$divisa.'$;'.$efectivo.'BS;'.$punto.'Bs' .PHP_EOL);
 		fclose($file);
 	}
+
+	public function getBackup(){
+		echo "hola";
+		die();
+		$backupDatabase = new Backup_Database('localhost', 'root', '', 'db_estacion', 'utf8');
+	}
 }

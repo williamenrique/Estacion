@@ -90,7 +90,7 @@
 					<!-- Notifications Dropdown Menu -->
 					<li class="nav-item dropdown">
 						<a class="nav-link" data-toggle="dropdown" href="#">
-							<i class="far fa-bell"></i>
+							<i class="fas fa-cogs"></i>
 							<!-- <span class="badge badge-warning navbar-badge">15</span> -->
 						</a>
 						<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
@@ -113,7 +113,7 @@
 								}
 								?>
 							<div class="dropdown-divider"></div>
-							<a href="<?= base_url()?>logout" class="dropdown-item dropdown-footer">cerrar sesion</a>
+							<a href="<?= base_url()?>logout" class="dropdown-item dropdown-footer">CERRAR SESION</a>
 						</div>
 					</li>
 

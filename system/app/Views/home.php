@@ -119,10 +119,8 @@
 					</div>
 					<div class="card">
 						<div class="card-header">
-							<a href="javascript:;" style="margin-top: 8px" class="btn btn-primary" id="irReporte"
-								onclick="fntIraReporte()">REPORTE SIN TARGET</a>
-							<a href="<?= base_url()?>fpdf/reporte.php" target="_blank" style=" margin-top: 8px" id="irReporte"
-								onclick="fntIraReporte()">REPORTE</a>
+							<a href="<?= base_url()?>fpdf/reporte.php" target="_blank" class="btn btn-primary"
+								style=" margin-top: 8px" id="irReporte" onclick="fntIraReporte('<?= date('d-m-y')?>')">REPORTE</a>
 						</div>
 					</div>
 				</div>

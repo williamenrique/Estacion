@@ -365,8 +365,8 @@ mueveReloj = (dateObject = new Date()) => {
 
 //TODO: generar pdf
 
-fntIraReporte = () => {
-    let ajaxUrl = base_url + "Home/reportePdf"
+fntIraReporte = (srtDate) => {
+    let ajaxUrl = base_url + "Home/reportePdf/" + srtDate
     //creamos el objeto para os navegadores
     var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
     //abrimos la conexion y enviamos los parametros para la peticion
@@ -375,17 +375,13 @@ fntIraReporte = () => {
     request.onreadystatechange = function () {
         //todo va bien 
         if (request.readyState == 4 && request.status == 200) {
-            // let objData = JSON.parse(request.responseText)
-            // let intTicket = objData.id_ticket_venta
-            // let srtNombre = objData.nombre_ticket
-            // let srtCI = objData.ci_ticket
-            // let srtListTipoVehiculo = objData.tipo_vehiculo_ticket
-            // let srtLTS = objData.lts_ticket
-            // let srtListTipoPago = objData.tipo_pago_ticket
-            // let srtFecha = objData.fecha_ticket
-            // let srtHora = objData.hora_ticket
-            // let srtNombreOperador = objData.user_nombres
-            // fntImprimir(intTicket, srtNombre, srtCI, srtListTipoVehiculo, srtLTS, srtListTipoPago, srtFecha, srtHora, srtNombreOperador)
+            var objData = JSON.parse(request.responseText)
+					//condionamos la respuesta del array del controlador
+					if (objData.status) { 
+						notifi(objData.msg,'info')
+					} else {
+						notifi(objData.msg,'error')
+					}
         }
     }
 }

@@ -284,6 +284,7 @@ fntCierre = () => {
 				notifi(objData.msg, 'success')
 				fntImprimirCierre(objData.dataCierre)
 				fntCargarDetalle()
+				fntBackup()
 			} else {
 				notifi(objData.msg, 'error')
 			}
@@ -341,6 +342,7 @@ fntCierreP = (fechaActiva) => {
 			if (objData.status) { 
 				fntImprimirCierre(objData.dataCierre)
 				fntCierrePendiente()
+				fntBackup()
 			}
 		}
 	}
@@ -364,7 +366,6 @@ mueveReloj = (dateObject = new Date()) => {
 }
 
 //TODO: generar pdf
-
 fntIraReporte = (srtDate) => {
     let ajaxUrl = base_url + "Home/reportePdf/" + srtDate
     //creamos el objeto para os navegadores
@@ -385,25 +386,7 @@ fntIraReporte = (srtDate) => {
         }
     }
 }
-
-fntBackup3 = () => {
-	let ajaxUrl = base_url + "Home/getBackup"
-    //creamos el objeto para os navegadores
-    var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
-    //abrimos la conexion y enviamos los parametros para la peticion
-    request.open("POST", ajaxUrl, true)
-    request.send()
-    request.onreadystatechange = function () {
-        //todo va bien 
-        if (request.readyState == 4 && request.status == 200) {
-            var objData = JSON.parse(request.responseText)
-					//condionamos la respuesta del array del controlador
-					
-        }
-    }
-}
-
-
+// TODO: generar un respaldo de la base de datos
 fntBackup = () => {
     // jObject= JSON.stringify(srtPago)
     $.ajax({

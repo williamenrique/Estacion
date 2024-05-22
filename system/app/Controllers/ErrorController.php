@@ -6,7 +6,7 @@ class Errors extends Controllers{
 		parent::__construct();
 	}
 	public function notFound(){
-			$data['page_name'] = "dashboard";
+			$data['page_name'] = "home";
 		$this->views->getViews($this, "error",$data);
 	}
 }

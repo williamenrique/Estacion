@@ -107,8 +107,16 @@
 								if($_SESSION['userData']['rol_id'] == 1){
 									?>
 							<a href="<?= base_url()?>usuario/createuser" class="dropdown-item">
-								<i class="fas fa-file mr-2"></i> Crear Usuario
+								<i class="fas fa-user mr-2"></i> CREAR USUARIO
 							</a>
+							<?php
+								}
+								?>
+							<?php
+								if($_SESSION['userData']['rol_id'] == 1){
+									?>
+							<a href="javascript:;" class="dropdown-item" onclick="fntBackup()"><i
+									class="fas fa-file-export mr-2"></i>BAKCUP</a>
 							<?php
 								}
 								?>

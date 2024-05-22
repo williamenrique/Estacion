@@ -198,9 +198,9 @@ class Home extends Controllers{
 		fclose($file);
 	}
 
-	public function getBackup(){
-		echo "hola";
-		die();
-		$backupDatabase = new Backup_Database('localhost', 'root', '', 'db_estacion', 'utf8');
-	}
+	// public function getBackup(){
+	// 	echo "hola";
+	// 	die();
+	// 	$backupDatabase = new Backup_Database('localhost', 'root', '', 'db_estacion', 'utf8');
+	// }
 }

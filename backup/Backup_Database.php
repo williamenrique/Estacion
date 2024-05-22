@@ -5,27 +5,6 @@
  * @author Daniel López Azaña <daniloaz@gmail.com>
  * @version 1.0
  */
-
-/**
- * Define database parameters here
- */
-define("DB_USER", 'root');
-define("DB_PASSWORD", '');
-define("DB_NAME", 'db_estacion');
-define("DB_HOST", 'localhost');
-define("BACKUP_DIR", 'myphp-backup-files'); // Comment this line to use same script's directory ('.')
-define("TABLES", '*'); // Full backup
-//define("TABLES", 'table1, table2, table3'); // Partial backup
-define('IGNORE_TABLES',array(
-    'tbl_token_auth',
-    'token_auth'
-)); // Tables to ignore
-define("CHARSET", 'utf8');
-define("GZIP_BACKUP_FILE", true); // Set to false if you want plain SQL backup files (not gzipped)
-define("DISABLE_FOREIGN_KEY_CHECKS", true); // Set to true if you are having foreign key constraint fails
-define("BATCH_SIZE", 1000); // Batch size when selecting rows from database in order to not exhaust system memory
-                            // Also number of rows per INSERT statement in backup file
-
 /**
  * The Backup_Database class
  */
@@ -101,7 +80,7 @@ class Backup_Database {
         $this->charset                 = $charset;
         $this->conn                    = $this->initializeDatabase();
         $this->backupDir               = BACKUP_DIR ? BACKUP_DIR : '.';
-        $this->backupFile              = 'myphp-backup-'.$this->dbName.'-'.date("d-m-y", time()).'.sql';
+        $this->backupFile              = 'Respaldo-'.$this->dbName.'-'.date("d-m-y", time()).'.sql';
         // $this->gzipBackupFile          = defined('GZIP_BACKUP_FILE') ? GZIP_BACKUP_FILE : true;
         $this->disableForeignKeyChecks = defined('DISABLE_FOREIGN_KEY_CHECKS') ? DISABLE_FOREIGN_KEY_CHECKS : true;
         $this->batchSize               = defined('BATCH_SIZE') ? BATCH_SIZE : 1000; // default 1000 rows
@@ -450,44 +429,4 @@ class Backup_Database {
         }
         return ($tables) ? $tables : false;
     }
-}
-
-
-/**
- * Instantiate Backup_Database and perform backup
- */
-
-// Report all errors
-error_reporting(E_ALL);
-// Set script max execution time
-set_time_limit(900); // 15 minutes
-
-if (php_sapi_name() != "cli") {
-    echo '<div style="font-family: monospace;">';
-}
-
-$backupDatabase = new Backup_Database(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, CHARSET);
-
-// Option-1: Backup tables already defined above
-$result = $backupDatabase->backupTables(TABLES) ? 'OK' : 'KO';
-
-// Option-2: Backup changed tables only - uncomment block below
-/*
-$since = '1 day';
-$changed = $backupDatabase->getChangedTables($since);
-if(!$changed){
-  $backupDatabase->obfPrint('No tables modified since last ' . $since . '! Quitting..', 1);
-  die();
-}
-$result = $backupDatabase->backupTables($changed) ? 'OK' : 'KO';
-*/
-
-
-$backupDatabase->obfPrint('Backup result: ' . $result, 1);
-
-// Use $output variable for further processing, for example to send it by email
-$output = $backupDatabase->getOutput();
-
-if (php_sapi_name() != "cli") {
-    echo '</div>';
 }
